@@ -36,6 +36,7 @@ buildscript {
         mockito_version = '3.9.0'
         mockito_kotlin_version = '2.2.0'
         core_testing_version = '2.1.0'
+        filebutle_version = '0.3.0'
     }
 
     repositories {
