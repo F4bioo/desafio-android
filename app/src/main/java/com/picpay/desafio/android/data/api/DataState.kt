@@ -1,7 +1,9 @@
 package com.picpay.desafio.android.data.api
 
 import okhttp3.ResponseBody
+import org.json.JSONObject
 import retrofit2.Response
+
 
 sealed class DataState<out R> {
     data class OnSuccess<out T>(val data: T) : DataState<T>()
@@ -10,15 +12,11 @@ sealed class DataState<out R> {
 }
 
 fun <T : Any> Response<T?>?.parseResponse(): DataState<T?> {
-    return try {
-        when (this) {
-            null -> throw NullPointerException("Response is null!")
-            else -> when (isSuccessful) {
-                true -> DataState.OnSuccess(body())
-                else -> DataState.OnError(errorBody(), code())
-            }
+    return when (this) {
+        null -> throw NullPointerException("Response is null!")
+        else -> when (isSuccessful) {
+            true -> DataState.OnSuccess(body())
+            else -> DataState.OnError(errorBody(), code())
         }
-    } catch (e: Exception) {
-        DataState.OnException(e)
     }
 }

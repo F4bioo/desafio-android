@@ -1,7 +1,7 @@
 package com.picpay.desafio.android.di
 
 import com.picpay.desafio.android.BuildConfig
-import com.picpay.desafio.android.data.api.ApiService
+import com.picpay.desafio.android.data.api.PicPayService
 import com.picpay.desafio.android.utils.Constants
 import dagger.Module
 import dagger.Provides
@@ -63,11 +63,11 @@ object RetrofitModule {
 
     @Singleton
     @Provides
-    fun provideApiService(
+    fun providePicPayService(
         retrofit: Retrofit.Builder
-    ): ApiService {
+    ): PicPayService {
         return retrofit
             .build()
-            .create(ApiService::class.java)
+            .create(PicPayService::class.java)
     }
 }

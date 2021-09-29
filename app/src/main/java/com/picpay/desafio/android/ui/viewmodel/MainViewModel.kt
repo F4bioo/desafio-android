@@ -21,6 +21,10 @@ constructor(
     val getUsersEvent: LiveData<DataState<List<User>>?>
         get() = _getUsersEvent
 
+    init {
+        getUsers()
+    }
+
     private fun getUsers() {
         viewModelScope.launch {
             _getUsersEvent.value = getUsers.invoke()

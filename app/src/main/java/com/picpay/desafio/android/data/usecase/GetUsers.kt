@@ -14,12 +14,16 @@ constructor(
 ) : BaseUseCase.Empty<DataState<List<User>>> {
 
     override suspend fun invoke(): DataState<List<User>> {
-        return when (val response = repository.getUsers().parseResponse()) {
-            is DataState.OnSuccess -> response.data?.let {
-                DataState.OnSuccess(it.fromDomainsToPhotos())
-            } ?: DataState.OnException(Exception("User list is empty!"))
-            is DataState.OnException -> DataState.OnException(response.e)
-            is DataState.OnError -> DataState.OnError(response.errorBody, response.code)
+        return try {
+            when (val response = repository.getUsers().parseResponse()) {
+                is DataState.OnSuccess -> response.data?.let {
+                    DataState.OnSuccess(it.fromDomainsToPhotos())
+                } ?: DataState.OnException(Exception("User list is empty!"))
+                is DataState.OnError -> DataState.OnError(response.errorBody, response.code)
+                is DataState.OnException -> DataState.OnException(response.e)
+            }
+        } catch (e: Exception) {
+            DataState.OnException(e)
         }
     }
 }

@@ -4,8 +4,8 @@ import com.picpay.desafio.android.data.model.UserDomain
 import retrofit2.Response
 import retrofit2.http.GET
 
-interface ApiService {
-    @GET("/users")
+interface PicPayService {
+    @GET("users")
     suspend fun getUsers(
     ): Response<List<UserDomain>?>?
 }
