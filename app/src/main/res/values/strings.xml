@@ -5,9 +5,14 @@
 
     <!--Main-->
     <string name="retry">Retry</string>
+    <string name="pagination_reached">The list has reached the end.</string>
     <string name="pagination_error">Oops! Unable to load data.</string>
+    <string name="ok">OK</string>
+    <string name="light_mode">light mode</string>
+    <string name="dark_mode">dark mode</string>
 
     <!--Adapter main-->
     <string name="username">\@%s</string>
+
 
 </resources>
