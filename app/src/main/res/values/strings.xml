@@ -3,4 +3,11 @@
     <string name="title">Contatos</string>
     <string name="error">Ocorreu um erro. Tente novamente.</string>
 
+    <!--Main-->
+    <string name="retry">Retry</string>
+    <string name="pagination_error">Oops! Unable to load data.</string>
+
+    <!--Adapter main-->
+    <string name="username">\@%s</string>
+
 </resources>

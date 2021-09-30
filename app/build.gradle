@@ -72,7 +72,6 @@ dependencies {
 
     // Picasso
     implementation "com.squareup.picasso:picasso:$picasso_version"
-    implementation "de.hdodenhof:circleimageview:$circleimageview_version"
 
     // Room
     implementation "androidx.room:room-runtime:$room_version"

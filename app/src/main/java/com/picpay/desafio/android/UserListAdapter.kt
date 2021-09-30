@@ -5,7 +5,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
 import com.picpay.desafio.android.data.model.User
-import com.picpay.desafio.android.databinding.ListItemUserBinding
+import com.picpay.desafio.android.databinding.AdapterItemBinding
 
 class UserListAdapter : RecyclerView.Adapter<UserListItemViewHolder>() {
 
@@ -22,7 +22,7 @@ class UserListAdapter : RecyclerView.Adapter<UserListItemViewHolder>() {
         }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): UserListItemViewHolder {
-        val biding = ListItemUserBinding.inflate(
+        val biding = AdapterItemBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
 

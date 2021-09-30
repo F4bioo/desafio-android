@@ -1,6 +1,6 @@
 <resources xmlns:tools="http://schemas.android.com/tools">
     <!-- Base application theme. -->
-    <style name="Theme.PicPay" parent="Theme.MaterialComponents.DayNight.DarkActionBar">
+    <style name="Theme.PicPay" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
         <item name="colorPrimaryVariant">@color/purple_700</item>
@@ -15,9 +15,14 @@
     </style>
 
     <style name="ScreenTitleTextView" parent="TextAppearance.AppCompat">
-        <item name="android:textColor">@android:color/white</item>
         <item name="android:textSize">28sp</item>
         <item name="android:textStyle">bold</item>
+    </style>
+
+    <!-- Rounded image native solution -->
+    <style name="roundedStyle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">50%</item>
     </style>
 
 </resources>
