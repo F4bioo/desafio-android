@@ -3,16 +3,22 @@
     <string name="title">Contatos</string>
     <string name="error">Ocorreu um erro. Tente novamente.</string>
 
+    <!-- Accessibility -->
+    <string name="desc_favorite">Favorite button</string>
+    <string name="desc_favorites">Favorites button</string>
+    <string name="desc_empty_list">Airplane image</string>
+
     <!--Main-->
     <string name="retry">Retry</string>
     <string name="pagination_reached">The list has reached the end.</string>
     <string name="pagination_error">Oops! Unable to load data.</string>
     <string name="ok">OK</string>
-    <string name="light_mode">light mode</string>
-    <string name="dark_mode">dark mode</string>
+    <string name="night_mode">night mode</string>
+    <string name="day_mode">day mode</string>
+    <string name="favorites">Favorites</string>
 
     <!--Adapter main-->
     <string name="username">\@%s</string>
-
+    <string name="empty_list">The list is empty.</string>
 
 </resources>

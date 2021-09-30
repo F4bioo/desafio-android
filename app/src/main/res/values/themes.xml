@@ -3,7 +3,7 @@
     <style name="Theme.PicPay" parent="Theme.MaterialComponents.DayNight.NoActionBar">
         <!-- Primary brand color. -->
         <item name="colorPrimary">@color/purple_500</item>
-        <item name="colorPrimaryVariant">@color/purple_700</item>
+        <item name="colorPrimaryVariant">@color/white</item>
         <item name="colorOnPrimary">@color/white</item>
         <!-- Secondary brand color. -->
         <item name="colorSecondary">@color/teal_200</item>
@@ -12,6 +12,7 @@
         <!-- Status bar color. -->
         <item name="android:statusBarColor" tools:targetApi="l">?attr/colorPrimaryVariant</item>
         <!-- Customize your theme here. -->
+        <item name="android:windowLightStatusBar" tools:targetApi="m">true</item>
     </style>
 
     <style name="ScreenTitleTextView" parent="TextAppearance.AppCompat">
@@ -20,9 +21,19 @@
     </style>
 
     <!-- Rounded image native solution -->
-    <style name="roundedStyle">
+    <style name="roundedImageStyle">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
+    </style>
+
+    <style name="extendedFabStyle">
+        <item name="cornerFamily">rounded</item>
+        <item name="cornerSize">16dp</item>
+    </style>
+
+    <style name="CustomProgressBar" parent="Widget.AppCompat.ProgressBar.Horizontal">
+        <item name="minHeight">32dp</item>  <!-- default 16dp -->
+        <item name="maxHeight">32dp</item>  <!-- default 16dp -->
     </style>
 
 </resources>

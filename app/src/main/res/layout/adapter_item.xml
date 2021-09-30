@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
+    android:background="?attr/selectableItemBackground"
     android:layout_height="wrap_content"
     android:orientation="vertical">
 
@@ -15,7 +16,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:shapeAppearance="@style/roundedStyle" />
+        app:shapeAppearance="@style/roundedImageStyle" />
 
     <TextView
         android:id="@+id/text_first_char"
@@ -23,13 +24,15 @@
         android:layout_height="0dp"
         android:alpha="0.5"
         android:gravity="center"
+        android:fontFamily="sans-serif-thin"
         android:textSize="22sp"
         android:textStyle="bold"
+        android:textAllCaps="true"
         app:layout_constraintBottom_toBottomOf="@+id/image_user"
         app:layout_constraintEnd_toEndOf="@+id/image_user"
         app:layout_constraintStart_toStartOf="@+id/image_user"
         app:layout_constraintTop_toTopOf="@+id/image_user"
-        tools:text="F" />
+        tools:text="M" />
 
     <TextView
         android:id="@+id/text_username"
