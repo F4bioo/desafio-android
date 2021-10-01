@@ -29,7 +29,7 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
         val isNightMode = prefs.getBoolean(
             Constants.KEY_DAY_NIGHT_MODE, true
         )
-        window.setStatusBarColor(isNightMode)
+        window.setStatusBarColor()
         isNightMode.setDayNightMode()
     }
 

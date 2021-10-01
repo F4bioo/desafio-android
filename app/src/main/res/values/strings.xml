@@ -20,5 +20,6 @@
     <!--Adapter main-->
     <string name="username">\@%s</string>
     <string name="empty_list">The list is empty.</string>
+    <string name="loading_list">Loading list…</string>
 
 </resources>

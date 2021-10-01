@@ -6,61 +6,24 @@
     android:fitsSystemWindows="true"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/title"
-        style="@style/ScreenTitleTextView"
-        android:layout_width="wrap_content"
+    <include
+        android:id="@+id/header_main"
+        layout="@layout/header_main"
+        android:layout_width="0dp"
         android:layout_height="wrap_content"
-        android:layout_marginHorizontal="24dp"
-        android:layout_marginTop="48dp"
-        android:textColor="@color/contact_title"
-        android:text="@string/title"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
 
-    <RadioGroup
-        android:id="@+id/group_theme"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:orientation="horizontal"
-        app:layout_constraintBottom_toBottomOf="@+id/title"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintStart_toEndOf="@+id/title"
-        app:layout_constraintTop_toTopOf="parent">
-
-        <RadioButton
-            android:id="@+id/radio_night_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginEnd="6dp"
-            android:button="@null"
-            android:checked="true"
-            android:drawableStart="@drawable/night_mode_selector"
-            android:drawablePadding="3dp"
-            android:text="@string/night_mode" />
-
-        <RadioButton
-            android:id="@+id/radio_day_mode"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:button="@null"
-            android:drawableStart="@drawable/day_mode_selector"
-            android:drawablePadding="3dp"
-            android:text="@string/day_mode" />
-
-    </RadioGroup>
-
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/recycler_main"
+    <include
+        android:id="@+id/list_main"
+        layout="@layout/list_main"
         android:layout_width="0dp"
         android:layout_height="0dp"
-        android:layout_marginTop="24dp"
-        android:splitMotionEvents="false"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/title"
-        tools:listitem="@layout/adapter_item" />
+        app:layout_constraintTop_toBottomOf="@+id/header_main" />
 
     <ProgressBar
         android:id="@+id/progress_main"
@@ -70,9 +33,9 @@
         android:layout_marginTop="16dp"
         android:indeterminateTint="@color/colorAccent"
         android:visibility="gone"
-        app:layout_constraintEnd_toEndOf="@+id/recycler_main"
-        app:layout_constraintStart_toStartOf="@+id/recycler_main"
-        app:layout_constraintTop_toTopOf="@+id/recycler_main"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/header_main"
         tools:visibility="visible" />
 
     <include
@@ -84,7 +47,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toTopOf="@+id/recycler_main" />
+        app:layout_constraintTop_toTopOf="@+id/list_main" />
 
     <com.google.android.material.floatingactionbutton.ExtendedFloatingActionButton
         android:id="@+id/fab"

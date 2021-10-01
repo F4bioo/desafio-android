@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.constraintlayout.widget.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/header_main"
+    android:elevation="3dp"
+    android:paddingBottom="24dp">
+
+    <TextView
+        android:id="@+id/title"
+        style="@style/ScreenTitleTextView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginHorizontal="24dp"
+        android:layout_marginTop="48dp"
+        android:text="@string/title"
+        android:textColor="@color/contact_title"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toTopOf="parent" />
+
+    <RadioGroup
+        android:id="@+id/group_theme"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:orientation="horizontal"
+        app:layout_constraintBottom_toBottomOf="@+id/title"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toEndOf="@+id/title"
+        app:layout_constraintTop_toTopOf="parent">
+
+        <RadioButton
+            android:id="@+id/radio_night_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="6dp"
+            android:button="@null"
+            android:checked="true"
+            android:drawableStart="@drawable/night_mode_selector"
+            android:drawablePadding="3dp"
+            android:text="@string/night_mode" />
+
+        <RadioButton
+            android:id="@+id/radio_day_mode"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:button="@null"
+            android:drawableStart="@drawable/day_mode_selector"
+            android:drawablePadding="3dp"
+            android:text="@string/day_mode" />
+
+    </RadioGroup>
+
+</androidx.constraintlayout.widget.ConstraintLayout>

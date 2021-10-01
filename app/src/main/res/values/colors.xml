@@ -16,4 +16,6 @@
     <color name="colorFab">#09A1BD</color>
 
     <color name="contact_title">#515151</color>
+    <color name="header_main">#f8f8f8</color>
+    <color name="window_bg">#ffffff</color>
 </resources>

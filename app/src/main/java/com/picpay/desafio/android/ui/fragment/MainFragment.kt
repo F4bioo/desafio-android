@@ -7,7 +7,9 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.paging.CombinedLoadStates
 import androidx.paging.ExperimentalPagingApi
+import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.picpay.desafio.android.R
@@ -54,19 +56,20 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         viewModel.pagingEvent.observe(viewLifecycleOwner) { pagingData ->
             adapter.submitData(lifecycle, pagingData)
             binding.progressMain.isVisible = false
+            binding.listMain.refreshMain.isRefreshing = false
         }
 
         viewModel.getPrefsDayNightMode { isNightMode ->
             if (isNightMode) {
-                binding.radioNightMode.isChecked = true
-            } else binding.radioDayMode.isChecked = true
+                binding.headerMain.radioNightMode.isChecked = true
+            } else binding.headerMain.radioDayMode.isChecked = true
         }
     }
 
     private fun initRecyclerView() {
         binding.apply {
-            recyclerMain.layoutManager = LinearLayoutManager(requireContext())
-            recyclerMain.adapter = adapter.withLoadStateHeaderAndFooter(
+            listMain.recyclerMain.layoutManager = LinearLayoutManager(requireContext())
+            listMain.recyclerMain.adapter = adapter.withLoadStateHeaderAndFooter(
                 header = UserLoadState { adapter.retry() },
                 footer = UserLoadState { adapter.retry() }
             )
@@ -74,22 +77,24 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun initListeners() {
-        binding.recyclerMain.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                super.onScrolled(recyclerView, dx, dy)
-                if (recyclerView.scrollState == RecyclerView.SCROLL_STATE_SETTLING)
-                    if (dy > 0) binding.fab.shrink()
-                    else if (dy < 0) binding.fab.extend()
-            }
+        binding.apply {
+            listMain.recyclerMain.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                    super.onScrolled(recyclerView, dx, dy)
+                    if (recyclerView.scrollState == RecyclerView.SCROLL_STATE_SETTLING)
+                        if (dy > 0) fab.shrink()
+                        else if (dy < 0) fab.extend()
+                }
 
-            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                super.onScrollStateChanged(recyclerView, newState)
-                auxHasReachedTop = !recyclerView.canScrollVertically(-1)
-                        && newState == RecyclerView.SCROLL_STATE_IDLE
-            }
-        })
+                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                    super.onScrollStateChanged(recyclerView, newState)
+                    auxHasReachedTop = !recyclerView.canScrollVertically(-1)
+                            && newState == RecyclerView.SCROLL_STATE_IDLE
+                }
+            })
+        }
 
-        binding.groupTheme.setOnCheckedChangeListener { _, checkedId ->
+        binding.headerMain.groupTheme.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.radio_night_mode -> viewModel.setPrefsDayNightMode(true) {
                     sharedViewModel.setResult(true)
@@ -101,8 +106,40 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             }
         }
 
+        adapter.addLoadStateListener { loadStates ->
+            loadStates.showEmptyList()
+        }
+
+        binding.emptyList.buttonRetry.setOnClickListener {
+            adapter.retry()
+        }
+
         binding.fab.setOnClickListener {
 
+        }
+
+        binding.listMain.refreshMain.setOnRefreshListener {
+            viewModel.getPhotosFromMediator()
+        }
+    }
+
+    private fun CombinedLoadStates.showEmptyList() {
+        binding.emptyList.apply {
+            val isLoading = refresh is LoadState.Loading
+            val isError = refresh is LoadState.Error
+
+            root.isVisible = ((isLoading || isError) && adapter.itemCount == 0)
+            buttonRetry.isVisible = isLoading.apply {
+                progressEmpty.isVisible = !this
+            }
+            buttonRetry.isVisible = isError.apply {
+                progressEmpty.isVisible = !this
+            }
+
+            textEmpty.text = when {
+                isLoading -> getString(R.string.loading_list)
+                else -> getString(R.string.empty_list)
+            }
         }
     }
 
@@ -112,7 +149,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             override fun handleOnBackPressed() {
                 if (auxHasReachedTop) {
                     fa.finish()
-                } else binding.recyclerMain.smoothScrollToPosition(0)
+                } else binding.listMain.recyclerMain
+                    .smoothScrollToPosition(0)
             }
         }
         fa.onBackPressedDispatcher

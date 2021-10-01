@@ -1,10 +1,14 @@
 package com.picpay.desafio.android.utils.extensions
 
+import android.content.Context
 import android.graphics.Color
 import android.os.Build
 import android.view.Window
 import android.widget.ImageView
+import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatDelegate
+import androidx.core.content.ContextCompat
+import com.picpay.desafio.android.R
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import java.util.*
@@ -20,7 +24,6 @@ fun ImageView.set(imageUrl: String, onCallBack: () -> Unit) {
             }
 
             override fun onError(e: Exception?) {
-                onCallBack.invoke()
             }
         })
 }
@@ -44,10 +47,12 @@ fun Boolean.setDayNightMode() {
     )
 }
 
-fun Window.setStatusBarColor(isNightMode: Boolean) {
-    val isApi23 = (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M)
-    statusBarColor = if (isApi23) {
-        if (isNightMode) Color.BLACK
-        else Color.WHITE
-    } else Color.BLACK
+fun Window.setStatusBarColor() {
+    statusBarColor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+        context.color(R.color.header_main)
+    } else context.color(R.color.black)
+}
+
+fun Context.color(@ColorRes color: Int): Int {
+    return ContextCompat.getColor(this, color)
 }
