@@ -40,7 +40,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentMainBinding.bind(view)
-        binding.progressMain.isVisible = true
+        binding.includeList.progress.isVisible = true
         initObserver()
         initRecyclerView()
         initListeners()
@@ -55,46 +55,42 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private fun initObserver() {
         viewModel.pagingEvent.observe(viewLifecycleOwner) { pagingData ->
             adapter.submitData(lifecycle, pagingData)
-            binding.progressMain.isVisible = false
-            binding.listMain.refreshMain.isRefreshing = false
+            binding.includeList.progress.isVisible = false
+            binding.includeList.refresh.isRefreshing = false
         }
 
         viewModel.getPrefsDayNightMode { isNightMode ->
             if (isNightMode) {
-                binding.headerMain.radioNightMode.isChecked = true
-            } else binding.headerMain.radioDayMode.isChecked = true
+                binding.includeHeader.radioNightMode.isChecked = true
+            } else binding.includeHeader.radioDayMode.isChecked = true
         }
     }
 
     private fun initRecyclerView() {
-        binding.apply {
-            listMain.recyclerMain.layoutManager = LinearLayoutManager(requireContext())
-            listMain.recyclerMain.adapter = adapter.withLoadStateHeaderAndFooter(
-                header = UserLoadState { adapter.retry() },
-                footer = UserLoadState { adapter.retry() }
-            )
-        }
+        binding.includeList.recycler.layoutManager = LinearLayoutManager(requireContext())
+        binding.includeList.recycler.adapter = adapter.withLoadStateHeaderAndFooter(
+            header = UserLoadState { adapter.retry() },
+            footer = UserLoadState { adapter.retry() }
+        )
     }
 
     private fun initListeners() {
-        binding.apply {
-            listMain.recyclerMain.addOnScrollListener(object : RecyclerView.OnScrollListener() {
-                override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
-                    super.onScrolled(recyclerView, dx, dy)
-                    if (recyclerView.scrollState == RecyclerView.SCROLL_STATE_SETTLING)
-                        if (dy > 0) fab.shrink()
-                        else if (dy < 0) fab.extend()
-                }
+        binding.includeList.recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
+            override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
+                super.onScrolled(recyclerView, dx, dy)
+                if (recyclerView.scrollState == RecyclerView.SCROLL_STATE_SETTLING)
+                    if (dy > 0) binding.fab.shrink()
+                    else if (dy < 0) binding.fab.extend()
+            }
 
-                override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
-                    super.onScrollStateChanged(recyclerView, newState)
-                    auxHasReachedTop = !recyclerView.canScrollVertically(-1)
-                            && newState == RecyclerView.SCROLL_STATE_IDLE
-                }
-            })
-        }
+            override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
+                super.onScrollStateChanged(recyclerView, newState)
+                auxHasReachedTop = !recyclerView.canScrollVertically(-1)
+                        && newState == RecyclerView.SCROLL_STATE_IDLE
+            }
+        })
 
-        binding.headerMain.groupTheme.setOnCheckedChangeListener { _, checkedId ->
+        binding.includeHeader.radioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
                 R.id.radio_night_mode -> viewModel.setPrefsDayNightMode(true) {
                     sharedViewModel.setResult(true)
@@ -110,7 +106,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             loadStates.showEmptyList()
         }
 
-        binding.emptyList.buttonRetry.setOnClickListener {
+        binding.includeEmpty.buttonRetry.setOnClickListener {
             adapter.retry()
         }
 
@@ -118,13 +114,13 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
         }
 
-        binding.listMain.refreshMain.setOnRefreshListener {
+        binding.includeList.refresh.setOnRefreshListener {
             viewModel.getPhotosFromMediator()
         }
     }
 
     private fun CombinedLoadStates.showEmptyList() {
-        binding.emptyList.apply {
+        binding.includeEmpty.apply {
             val isLoading = refresh is LoadState.Loading
             val isError = refresh is LoadState.Error
 
@@ -149,7 +145,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             override fun handleOnBackPressed() {
                 if (auxHasReachedTop) {
                     fa.finish()
-                } else binding.listMain.recyclerMain
+                } else binding.includeList.recycler
                     .smoothScrollToPosition(0)
             }
         }

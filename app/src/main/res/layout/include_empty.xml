@@ -5,7 +5,7 @@
     android:layout_height="match_parent">
 
     <ImageView
-        android:id="@+id/imageView"
+        android:id="@+id/image_empty"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:contentDescription="@string/desc_empty_list"
@@ -31,7 +31,7 @@
         android:textSize="19sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/imageView" />
+        app:layout_constraintTop_toBottomOf="@+id/image_empty" />
 
     <ProgressBar
         android:id="@+id/progress_empty"
@@ -43,8 +43,8 @@
         android:indeterminateTint="@color/colorAccent"
         android:translationY="8dp"
         android:visibility="visible"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="@+id/image_empty"
+        app:layout_constraintStart_toStartOf="@+id/image_empty"
         app:layout_constraintTop_toBottomOf="@+id/text_empty" />
 
     <com.google.android.material.button.MaterialButton
@@ -58,8 +58,8 @@
         android:textColor="@color/colorAccent"
         android:visibility="visible"
         app:cornerRadius="0dp"
-        app:layout_constraintEnd_toEndOf="@+id/imageView"
-        app:layout_constraintStart_toStartOf="@+id/imageView"
+        app:layout_constraintEnd_toEndOf="@+id/image_empty"
+        app:layout_constraintStart_toStartOf="@+id/image_empty"
         app:layout_constraintTop_toBottomOf="@+id/progress_empty"
         app:rippleColor="#19858585" />
 

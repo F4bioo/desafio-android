@@ -49,7 +49,7 @@ fun Boolean.setDayNightMode() {
 
 fun Window.setStatusBarColor() {
     statusBarColor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        context.color(R.color.header_main)
+        context.color(R.color.color_header)
     } else context.color(R.color.black)
 }
 
