@@ -27,7 +27,7 @@
         android:gravity="center"
         android:indeterminateTint="@color/colorAccent"
         android:letterSpacing="0.12"
-        android:text="@string/empty_list"
+        android:text="@string/main_empty_list"
         android:textSize="19sp"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

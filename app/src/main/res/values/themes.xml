@@ -17,17 +17,32 @@
     </style>
 
     <style name="ScreenTitleTextView" parent="TextAppearance.AppCompat">
-        <item name="android:textSize">28sp</item>
+        <item name="android:textSize">24sp</item>
         <item name="android:textStyle">bold</item>
     </style>
 
+    <style name="ModalButton" parent="@style/Widget.MaterialComponents.Button.UnelevatedButton">
+        <item name="colorPrimary">#B23A3A3A</item>
+        <item name="colorOnSurface">#333333</item>
+        <item name="strokeColor">#009688</item>
+        <item name="android:insetLeft">0dp</item>
+        <item name="android:insetTop">0dp</item>
+        <item name="android:insetRight">0dp</item>
+        <item name="android:insetBottom">0dp</item>
+        <item name="android:layout_width">60dp</item>
+        <item name="android:layout_height">60dp</item>
+        <item name="iconPadding">0dp</item>
+        <item name="iconGravity">textStart</item>
+        <item name="shapeAppearance">@style/RoundedStyle</item>
+    </style>
+
     <!-- Rounded image native solution -->
-    <style name="roundedImageStyle">
+    <style name="RoundedStyle">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">50%</item>
     </style>
 
-    <style name="extendedFabStyle">
+    <style name="ExtendedFabStyle">
         <item name="cornerFamily">rounded</item>
         <item name="cornerSize">16dp</item>
     </style>

@@ -3,30 +3,21 @@ package com.picpay.desafio.android.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.CheckBox
 import android.widget.TextView
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.coroutineScope
-import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
+import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.picpay.desafio.android.R
-import com.picpay.desafio.android.data.api.DataState
 import com.picpay.desafio.android.data.model.User
-import com.picpay.desafio.android.data.usecase.GetFavorite
 import com.picpay.desafio.android.databinding.AdapterItemBinding
 import com.picpay.desafio.android.utils.extensions.bg
 import com.picpay.desafio.android.utils.extensions.set
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
 
-class RemoteUserAdapter(
-    private val lifecycle: Lifecycle,
-    private val getFavorite: GetFavorite,
+class LocalUserAdapter(
     private val onClickListener: (view: View, user: User, position: Int) -> Unit
-) : PagingDataAdapter<User, RemoteUserAdapter.ViewHolder>(RemoteUserAdapter) {
+) : ListAdapter<User, LocalUserAdapter.ViewHolder>(LocalUserAdapter) {
 
-    private var job: Job? = null
+    private val users = arrayListOf<User>()
 
     private companion object : DiffUtil.ItemCallback<User>() {
         override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
@@ -46,9 +37,11 @@ class RemoteUserAdapter(
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        val user = getItem(position)
-        user?.let { holder.viewBiding(it) }
+        val user = users[position]
+        holder.viewBiding(user)
     }
+
+    override fun getItemCount() = users.size
 
     inner class ViewHolder(
         private val biding: AdapterItemBinding,
@@ -62,35 +55,40 @@ class RemoteUserAdapter(
                 imageUser.bg()
                 textFirstChar.text = user.name.first().toString()
                 imageUser.set(user.img) { textFirstChar.text = "" }
-                checkFavorite.isFavorite(user.id)
+                checkFavorite.isChecked = user.favorite
+
+                itemView.setOnClickListener {
+                    it.postDelayed({
+                        onClickListener(it, user, layoutPosition)
+                    }, 300)
+                }
 
                 checkFavorite.setOnClickListener {
                     user.favorite = checkFavorite.isChecked
-                    onClickListener.invoke(it, user, layoutPosition)
+                    modifyItemList(layoutPosition, user)
+                    onClickListener(it, user, layoutPosition)
                 }
             }
-
-            itemView.setOnClickListener {
-                it.postDelayed({
-                    onClickListener.invoke(it, user, layoutPosition)
-                }, 300)
-            }
         }
+    }
+
+    override fun submitList(list: MutableList<User>?) {
+        super.submitList(list?.distinct())
+        list?.let {
+            users.addAll(it)
+        }
+    }
+
+    fun clearList() {
+        users.clear()
+    }
+
+    fun modifyItemList(position: Int, user: User) {
+        users[position] = user
+        notifyItemChanged(position)
     }
 
     fun TextView.text(username: String) {
         text = context.getString(R.string.username, username)
-    }
-
-    private fun CheckBox.isFavorite(id: String) {
-        job = lifecycle.coroutineScope.launch {
-            val dataState = getFavorite.invoke(GetFavorite.Params(id))
-            isChecked = dataState is DataState.OnSuccess
-                    && dataState.data == true
-        }
-    }
-
-    fun jobCancel() {
-        job?.cancel()
     }
 }

@@ -4,34 +4,48 @@
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
     android:background="@color/color_header"
-    android:paddingBottom="24dp">
+    android:paddingBottom="16dp">
 
     <androidx.constraintlayout.widget.ConstraintLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
+        android:minHeight="84dp"
         app:layout_scrollFlags="scroll|enterAlways">
+
+        <ImageButton
+            android:id="@+id/button_arrow"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="8dp"
+            android:background="?attr/selectableItemBackgroundBorderless"
+            android:contentDescription="@string/desc_arrow_back"
+            android:padding="4dp"
+            android:src="@drawable/ic_baseline_arrow_back"
+            android:visibility="gone"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <TextView
             android:id="@+id/text_title"
             style="@style/ScreenTitleTextView"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:layout_marginHorizontal="24dp"
-            android:layout_marginTop="48dp"
+            android:layout_marginStart="16dp"
             android:text="@string/title"
             android:textColor="@color/contact_title"
-            app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toTopOf="parent" />
+            app:layout_constraintBottom_toBottomOf="@+id/button_arrow"
+            app:layout_constraintStart_toEndOf="@+id/button_arrow"
+            app:layout_constraintTop_toTopOf="@+id/button_arrow" />
 
         <RadioGroup
             android:id="@+id/radio_group"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:orientation="horizontal"
-            app:layout_constraintBottom_toBottomOf="@+id/text_title"
+            app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
-            app:layout_constraintStart_toEndOf="@+id/text_title"
-            app:layout_constraintTop_toTopOf="parent">
+            app:layout_constraintStart_toEndOf="@+id/text_title">
 
             <RadioButton
                 android:id="@+id/radio_night_mode"

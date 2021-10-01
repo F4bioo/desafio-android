@@ -7,18 +7,22 @@ import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
 import androidx.paging.ExperimentalPagingApi
 import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.picpay.desafio.android.R
+import com.picpay.desafio.android.data.usecase.GetFavorite
 import com.picpay.desafio.android.databinding.FragmentMainBinding
 import com.picpay.desafio.android.ui.adapter.RemoteUserAdapter
 import com.picpay.desafio.android.ui.adapter.paging.UserLoadState
 import com.picpay.desafio.android.ui.viewmodel.MainViewModel
 import com.picpay.desafio.android.utils.SharedViewModel
+import com.picpay.desafio.android.utils.extensions.navigateWithAnimations
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 
 @ExperimentalPagingApi
@@ -28,19 +32,28 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private val binding get() = _binding!!
     private val viewModel by viewModels<MainViewModel>()
     private val sharedViewModel by activityViewModels<SharedViewModel>()
+    private var inOnTop = true
 
-    private var auxHasReachedTop = true
+    @Inject
+    lateinit var getFavorite: GetFavorite
 
     private val adapter by lazy {
-        RemoteUserAdapter { view, user, position ->
+        RemoteUserAdapter(lifecycle, getFavorite) { view, user, position ->
+            when (view.id) {
+                R.id.check_favorite -> {
+                    viewModel.setFavorite(user)
+                }
+                else -> {
 
+                }
+            }
         }
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         _binding = FragmentMainBinding.bind(view)
-        binding.includeList.progress.isVisible = true
+        viewBiding()
         initObserver()
         initRecyclerView()
         initListeners()
@@ -50,6 +63,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     override fun onDestroyView() {
         super.onDestroyView()
         _binding = null
+        adapter.jobCancel()
+    }
+
+    private fun viewBiding() {
+        binding.includeList.progress.isVisible = true
     }
 
     private fun initObserver() {
@@ -85,8 +103,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                auxHasReachedTop = !recyclerView.canScrollVertically(-1)
+                inOnTop = !recyclerView.canScrollVertically(-1)
                         && newState == RecyclerView.SCROLL_STATE_IDLE
+
+                binding.fab.isVisible = !(!recyclerView.canScrollVertically(1)
+                        && newState == RecyclerView.SCROLL_STATE_IDLE)
             }
         })
 
@@ -111,11 +132,12 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
 
         binding.fab.setOnClickListener {
-
+            findNavController()
+                .navigateWithAnimations(R.id.action_mainFragment_to_favoritesFragment)
         }
 
         binding.includeList.refresh.setOnRefreshListener {
-            viewModel.getPhotosFromMediator()
+            viewModel.getUsersFromMediator()
         }
     }
 
@@ -134,7 +156,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
             textEmpty.text = when {
                 isLoading -> getString(R.string.loading_list)
-                else -> getString(R.string.empty_list)
+                else -> getString(R.string.main_empty_list)
             }
         }
     }
@@ -143,7 +165,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         val fa = requireActivity()
         val callback = object : OnBackPressedCallback(true) {
             override fun handleOnBackPressed() {
-                if (auxHasReachedTop) {
+                if (inOnTop) {
                     fa.finish()
                 } else binding.includeList.recycler
                     .smoothScrollToPosition(0)

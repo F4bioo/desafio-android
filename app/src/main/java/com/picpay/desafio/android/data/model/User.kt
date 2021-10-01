@@ -9,5 +9,5 @@ data class User(
     val name: String,
     val img: String,
     val username: String,
-    val favorite: Boolean = false
+    var favorite: Boolean = false
 ) : Parcelable

@@ -2,6 +2,7 @@ package com.picpay.desafio.android.di
 
 import android.content.Context
 import androidx.room.Room
+import com.picpay.desafio.android.data.room.FavoriteDao
 import com.picpay.desafio.android.data.room.PicPayDatabase
 import com.picpay.desafio.android.data.room.RemoteKeyDao
 import com.picpay.desafio.android.data.room.UserDao
@@ -42,5 +43,13 @@ object RoomModule {
         db: PicPayDatabase
     ): RemoteKeyDao {
         return db.keyDao()
+    }
+
+    @Singleton
+    @Provides
+    fun provideFavoriteDao(
+        db: PicPayDatabase
+    ): FavoriteDao {
+        return db.favoriteDao()
     }
 }

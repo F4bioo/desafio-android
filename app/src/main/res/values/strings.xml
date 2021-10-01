@@ -1,12 +1,13 @@
 <resources>
+    <!--App-->
     <string name="app_name">PicPay</string>
-    <string name="title">Contatos</string>
-    <string name="error">Ocorreu um erro. Tente novamente.</string>
+    <string name="title">Contacts</string>
 
     <!-- Accessibility -->
     <string name="desc_favorite">Favorite button</string>
     <string name="desc_favorites">Favorites button</string>
     <string name="desc_empty_list">Airplane image</string>
+    <string name="desc_arrow_back">Arrow back</string>
 
     <!--Main-->
     <string name="retry">Retry</string>
@@ -17,9 +18,12 @@
     <string name="day_mode">day mode</string>
     <string name="favorites">Favorites</string>
 
+    <!--Favorites-->
+    <string name="favorites_empty_list">The favorites list is empty.</string>
+
     <!--Adapter main-->
     <string name="username">\@%s</string>
-    <string name="empty_list">The list is empty.</string>
+    <string name="main_empty_list">The list is empty.</string>
     <string name="loading_list">Loading list…</string>
 
 </resources>
