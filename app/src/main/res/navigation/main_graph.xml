@@ -13,12 +13,29 @@
         <action
             android:id="@+id/action_mainFragment_to_favoritesFragment"
             app:destination="@id/favoritesFragment" />
+        <action
+            android:id="@+id/action_mainFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
     </fragment>
 
     <fragment
         android:id="@+id/favoritesFragment"
         android:name="com.picpay.desafio.android.ui.fragment.FavoritesFragment"
         android:label="FavoritesFragment"
-        tools:layout="@layout/fragment_favorites" />
+        tools:layout="@layout/fragment_favorites">
+        <action
+            android:id="@+id/action_favoritesFragment_to_detailsFragment"
+            app:destination="@id/detailsFragment" />
+    </fragment>
+
+    <dialog
+        android:id="@+id/detailsFragment"
+        android:name="com.picpay.desafio.android.ui.fragment.DetailsFragment"
+        android:label="DetailsFragment"
+        tools:layout="@layout/fragment_details">
+        <argument
+            android:name="detailsArgs"
+            app:argType="com.picpay.desafio.android.data.model.User" />
+    </dialog>
 
 </navigation>

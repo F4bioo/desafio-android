@@ -21,6 +21,7 @@ import com.picpay.desafio.android.ui.adapter.paging.UserLoadState
 import com.picpay.desafio.android.ui.viewmodel.MainViewModel
 import com.picpay.desafio.android.utils.SharedViewModel
 import com.picpay.desafio.android.utils.extensions.navigateWithAnimations
+import com.picpay.desafio.android.utils.extensions.safelyNavigate
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -38,13 +39,15 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     lateinit var getFavorite: GetFavorite
 
     private val adapter by lazy {
-        RemoteUserAdapter(lifecycle, getFavorite) { view, user, position ->
+        RemoteUserAdapter(lifecycle, getFavorite) { view, user ->
             when (view.id) {
                 R.id.check_favorite -> {
                     viewModel.setFavorite(user)
                 }
                 else -> {
-
+                    val directions =
+                        MainFragmentDirections.actionMainFragmentToDetailsFragment(user)
+                    findNavController().safelyNavigate(directions)
                 }
             }
         }

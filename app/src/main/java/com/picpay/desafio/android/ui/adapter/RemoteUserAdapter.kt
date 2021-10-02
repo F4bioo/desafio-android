@@ -4,26 +4,25 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
-import android.widget.TextView
 import androidx.lifecycle.Lifecycle
 import androidx.lifecycle.coroutineScope
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
-import com.picpay.desafio.android.R
 import com.picpay.desafio.android.data.api.DataState
 import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.data.usecase.GetFavorite
 import com.picpay.desafio.android.databinding.AdapterItemBinding
 import com.picpay.desafio.android.utils.extensions.bg
 import com.picpay.desafio.android.utils.extensions.set
+import com.picpay.desafio.android.utils.extensions.username
 import kotlinx.coroutines.Job
 import kotlinx.coroutines.launch
 
 class RemoteUserAdapter(
     private val lifecycle: Lifecycle,
     private val getFavorite: GetFavorite,
-    private val onClickListener: (view: View, user: User, position: Int) -> Unit
+    private val onClickListener: (view: View, user: User) -> Unit
 ) : PagingDataAdapter<User, RemoteUserAdapter.ViewHolder>(RemoteUserAdapter) {
 
     private var job: Job? = null
@@ -52,12 +51,12 @@ class RemoteUserAdapter(
 
     inner class ViewHolder(
         private val biding: AdapterItemBinding,
-        private val onClickListener: (view: View, user: User, position: Int) -> Unit
+        private val onClickListener: (view: View, user: User) -> Unit
     ) : RecyclerView.ViewHolder(biding.root) {
 
         fun viewBiding(user: User) {
             biding.apply {
-                textUsername.text(user.username)
+                textUsername.username(user.username)
                 textName.text = user.name
                 imageUser.bg()
                 textFirstChar.text = user.name.first().toString()
@@ -66,20 +65,17 @@ class RemoteUserAdapter(
 
                 checkFavorite.setOnClickListener {
                     user.favorite = checkFavorite.isChecked
-                    onClickListener.invoke(it, user, layoutPosition)
+                    onClickListener.invoke(it, user)
                 }
             }
 
             itemView.setOnClickListener {
                 it.postDelayed({
-                    onClickListener.invoke(it, user, layoutPosition)
+                    user.favorite = biding.checkFavorite.isChecked
+                    onClickListener.invoke(it, user)
                 }, 300)
             }
         }
-    }
-
-    fun TextView.text(username: String) {
-        text = context.getString(R.string.username, username)
     }
 
     private fun CheckBox.isFavorite(id: String) {

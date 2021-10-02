@@ -12,6 +12,7 @@ import com.picpay.desafio.android.data.api.DataState
 import com.picpay.desafio.android.databinding.FragmentFavoritesBinding
 import com.picpay.desafio.android.ui.adapter.LocalUserAdapter
 import com.picpay.desafio.android.ui.viewmodel.FavoritesViewModel
+import com.picpay.desafio.android.utils.extensions.safelyNavigate
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -21,13 +22,15 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     private val viewModel by viewModels<FavoritesViewModel>()
 
     private val adapter by lazy {
-        LocalUserAdapter { view, user, position ->
+        LocalUserAdapter { view, user ->
             when (view.id) {
                 R.id.check_favorite -> {
                     viewModel.setFavorite(user)
                 }
                 else -> {
-
+                    val directions =
+                        FavoritesFragmentDirections.actionFavoritesFragmentToDetailsFragment(user)
+                    findNavController().safelyNavigate(directions)
                 }
             }
         }

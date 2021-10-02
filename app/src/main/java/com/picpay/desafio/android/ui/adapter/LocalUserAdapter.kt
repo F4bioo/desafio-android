@@ -3,18 +3,17 @@ package com.picpay.desafio.android.ui.adapter
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.TextView
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.picpay.desafio.android.R
 import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.databinding.AdapterItemBinding
 import com.picpay.desafio.android.utils.extensions.bg
 import com.picpay.desafio.android.utils.extensions.set
+import com.picpay.desafio.android.utils.extensions.username
 
 class LocalUserAdapter(
-    private val onClickListener: (view: View, user: User, position: Int) -> Unit
+    private val onClickListener: (view: View, user: User) -> Unit
 ) : ListAdapter<User, LocalUserAdapter.ViewHolder>(LocalUserAdapter) {
 
     private val users = arrayListOf<User>()
@@ -45,12 +44,12 @@ class LocalUserAdapter(
 
     inner class ViewHolder(
         private val biding: AdapterItemBinding,
-        private val onClickListener: (view: View, user: User, position: Int) -> Unit
+        private val onClickListener: (view: View, user: User) -> Unit
     ) : RecyclerView.ViewHolder(biding.root) {
 
         fun viewBiding(user: User) {
             biding.apply {
-                textUsername.text(user.username)
+                textUsername.username(user.username)
                 textName.text = user.name
                 imageUser.bg()
                 textFirstChar.text = user.name.first().toString()
@@ -59,14 +58,14 @@ class LocalUserAdapter(
 
                 itemView.setOnClickListener {
                     it.postDelayed({
-                        onClickListener(it, user, layoutPosition)
+                        onClickListener(it, user)
                     }, 300)
                 }
 
                 checkFavorite.setOnClickListener {
                     user.favorite = checkFavorite.isChecked
                     modifyItemList(layoutPosition, user)
-                    onClickListener(it, user, layoutPosition)
+                    onClickListener(it, user)
                 }
             }
         }
@@ -86,9 +85,5 @@ class LocalUserAdapter(
     fun modifyItemList(position: Int, user: User) {
         users[position] = user
         notifyItemChanged(position)
-    }
-
-    fun TextView.text(username: String) {
-        text = context.getString(R.string.username, username)
     }
 }

@@ -18,4 +18,5 @@
     <color name="contact_title">#515151</color>
     <color name="color_header">#f8f8f8</color>
     <color name="window_bg">#ffffff</color>
+    <color name="color_favorite">#EF5350</color>
 </resources>

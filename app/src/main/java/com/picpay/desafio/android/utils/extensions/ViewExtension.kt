@@ -5,9 +5,12 @@ import android.graphics.Color
 import android.os.Build
 import android.view.Window
 import android.widget.ImageView
+import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.navigation.NavController
+import androidx.navigation.NavDirections
 import com.picpay.desafio.android.R
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -55,4 +58,13 @@ fun Window.setStatusBarColor() {
 
 fun Context.color(@ColorRes color: Int): Int {
     return ContextCompat.getColor(this, color)
+}
+
+fun TextView.username(username: String) {
+    text = context.getString(R.string.username, username)
+}
+
+fun NavController.safelyNavigate(directions: NavDirections) = try {
+    navigate(directions)
+} catch (e: Exception) {
 }

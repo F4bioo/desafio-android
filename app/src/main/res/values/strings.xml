@@ -19,7 +19,11 @@
     <string name="favorites">Favorites</string>
 
     <!--Favorites-->
-    <string name="favorites_empty_list">The favorites list is empty.</string>
+    <string name="favorites_empty_list">The favorites list is empty.</string>]
+
+    <!--Details-->
+    <string name="favorite">Favorite</string>
+    <string name="share">Share</string>
 
     <!--Adapter main-->
     <string name="username">\@%s</string>
