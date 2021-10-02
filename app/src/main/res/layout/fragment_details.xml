@@ -31,15 +31,17 @@
         android:id="@+id/text_first_char"
         android:layout_width="0dp"
         android:layout_height="0dp"
+        android:textColor="#fff"
         android:fontFamily="sans-serif-thin"
         android:gravity="center"
-        android:textAllCaps="true"
         android:textSize="28sp"
         android:textStyle="bold"
+        android:textAllCaps="true"
         app:layout_constraintBottom_toBottomOf="@+id/image_user"
         app:layout_constraintEnd_toEndOf="@+id/image_user"
         app:layout_constraintStart_toStartOf="@+id/image_user"
         app:layout_constraintTop_toTopOf="@+id/image_user"
+        tools:textColor="#505050"
         tools:text="M" />
 
     <TextView
