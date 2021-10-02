@@ -82,7 +82,7 @@ class RemoteUserAdapter(
         job = lifecycle.coroutineScope.launch {
             val dataState = getFavorite.invoke(GetFavorite.Params(id))
             isChecked = dataState is DataState.OnSuccess
-                    && dataState.data == true
+                    && dataState.data != null
         }
     }
 

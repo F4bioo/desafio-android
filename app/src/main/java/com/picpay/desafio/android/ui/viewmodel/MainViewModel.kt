@@ -8,6 +8,7 @@ import androidx.paging.ExperimentalPagingApi
 import androidx.paging.PagingData
 import androidx.paging.cachedIn
 import androidx.paging.map
+import com.picpay.desafio.android.data.api.DataState
 import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.data.usecase.GetMediatorData
 import com.picpay.desafio.android.data.usecase.SetFavorite
@@ -31,6 +32,10 @@ constructor(
     private val _pagingEvent = MutableLiveData<PagingData<User>>()
     val pagingEvent: LiveData<PagingData<User>>
         get() = _pagingEvent
+
+    private val _favoriteEvent = MutableLiveData<DataState<User?>>()
+    val favoriteEvent: LiveData<DataState<User?>>
+        get() = _favoriteEvent
 
     init {
         getUsersFromMediator()
@@ -60,7 +65,7 @@ constructor(
 
     fun setFavorite(user: User) {
         viewModelScope.launch {
-            setFavorite.invoke(SetFavorite.Params(user))
+            _favoriteEvent.value = setFavorite.invoke(SetFavorite.Params(user))
         }
     }
 }

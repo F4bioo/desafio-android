@@ -23,8 +23,8 @@ constructor(
     val getFavoritesEvent: LiveData<DataState<List<User>?>>
         get() = _getFavoritesEvent
 
-    private val _setFavoritesEvent = MutableLiveData<DataState<Boolean>>()
-    val setFavoritesEvent: LiveData<DataState<Boolean>>
+    private val _setFavoritesEvent = MutableLiveData<DataState<User?>>()
+    val setFavoritesEvent: LiveData<DataState<User?>>
         get() = _setFavoritesEvent
 
     fun getFavorites() {

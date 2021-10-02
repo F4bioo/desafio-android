@@ -6,32 +6,20 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.picpay.desafio.android.data.api.DataState
 import com.picpay.desafio.android.data.model.User
-import com.picpay.desafio.android.data.usecase.GetFavorite
 import com.picpay.desafio.android.data.usecase.SetFavorite
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.launch
 import javax.inject.Inject
 
 @HiltViewModel
-class ModalViewModel
+class DetailsViewModel
 @Inject
 constructor(
-    private val getFavorite: GetFavorite,
     private val setFavorite: SetFavorite
 ) : ViewModel() {
-    private val _insertEvent = MutableLiveData<DataState<Boolean>>()
-    val insertEvent: LiveData<DataState<Boolean>>
+    private val _insertEvent = MutableLiveData<DataState<User?>>()
+    val insertEvent: LiveData<DataState<User?>>
         get() = _insertEvent
-
-    private val _selectEvent = MutableLiveData<DataState<Boolean>>()
-    val selectEvent: LiveData<DataState<Boolean>>
-        get() = _selectEvent
-
-    fun getFavorite(id: String) {
-        viewModelScope.launch {
-            _selectEvent.value = getFavorite.invoke(GetFavorite.Params(id))
-        }
-    }
 
     fun setFavorite(user: User) {
         viewModelScope.launch {

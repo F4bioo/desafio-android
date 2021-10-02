@@ -87,6 +87,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
         }
 
         viewModel.setFavoritesEvent.observe(viewLifecycleOwner) { dataState ->
+            // TODO tratar caso erro no insert (dica: se o user vier null)
             if (dataState is DataState.OnSuccess) {
                 view?.postDelayed({
                     getFavorites()

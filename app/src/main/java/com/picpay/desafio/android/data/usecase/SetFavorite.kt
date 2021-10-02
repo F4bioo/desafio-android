@@ -10,9 +10,9 @@ class SetFavorite
 @Inject
 constructor(
     private val repository: LocalRepository
-) : BaseUseCase.Params<DataState<Boolean>, SetFavorite.Params> {
+) : BaseUseCase.Params<DataState<User?>, SetFavorite.Params> {
 
-    override suspend fun invoke(params: Params): DataState<Boolean> {
+    override suspend fun invoke(params: Params): DataState<User?> {
         return try {
             val favoriteEntity = params.user.fromUserToFavoriteEntity()
 
@@ -20,7 +20,10 @@ constructor(
                 repository.setFavorite(favoriteEntity) != -1L
             } else repository.delFavorite(favoriteEntity) != -1
 
-            DataState.OnSuccess(result)
+            if (result) {
+                DataState.OnSuccess(params.user)
+            } else DataState.OnSuccess(null)
+
         } catch (e: Exception) {
             DataState.OnException(e)
         }

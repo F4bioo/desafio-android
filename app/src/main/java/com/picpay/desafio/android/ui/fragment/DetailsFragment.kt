@@ -6,12 +6,14 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
 import com.picpay.desafio.android.R
 import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.databinding.FragmentDetailsBinding
+import com.picpay.desafio.android.ui.viewmodel.DetailsViewModel
 import com.picpay.desafio.android.utils.extensions.bg
 import com.picpay.desafio.android.utils.extensions.set
 import com.picpay.desafio.android.utils.extensions.username
@@ -20,6 +22,7 @@ import com.picpay.desafio.android.utils.extensions.username
 class DetailsFragment : BottomSheetDialogFragment() {
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
+    private val viewModel by viewModels<DetailsViewModel>()
     private val args by navArgs<DetailsFragmentArgs>()
     private lateinit var user: User
 
@@ -37,6 +40,7 @@ class DetailsFragment : BottomSheetDialogFragment() {
         user = args.detailsArgs
         viewBiding()
         initListeners()
+        initObserver()
     }
 
     override fun onDestroyView() {
@@ -73,6 +77,10 @@ class DetailsFragment : BottomSheetDialogFragment() {
                 }
             }
         }
+    }
+
+    private fun initObserver() {
+        // TODO observar o insert de favorito
     }
 
     fun MaterialButton.favorite(@DrawableRes icon: Int, @ColorRes color: Int) {

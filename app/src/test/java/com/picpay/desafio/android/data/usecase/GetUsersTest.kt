@@ -27,21 +27,21 @@ class GetUsersTest {
     private val repository: RemoteRepository = mock()
     private lateinit var getUsers: GetUsers
 
-    private val successMock: Response<List<UserDomain>?>? = Response.success(arrayListOf())
+    private val success: Response<List<UserDomain>?>? = Response.success(arrayListOf())
     private val errorBody = readFile("json/error_body.json")
-    private val errorMock: Response<List<UserDomain>?>? = Response.error<List<UserDomain>?>(
+    private val error: Response<List<UserDomain>?>? = Response.error<List<UserDomain>?>(
         404, errorBody.toResponseBody("application/json".toMediaTypeOrNull())
     )
 
     @Test
-    fun `should fetch data when call API from repository`(): Unit = runBlocking {
+    fun shouldPassWhenCallApiFromRepository(): Unit = runBlocking {
         getUsers = GetUsers(repository)
         getUsers.invoke()
         verify(repository, times(1)).getUsers()
     }
 
     @Test
-    fun `should return exception when get a null response`(): Unit = runBlocking {
+    fun shouldReturnExceptionWhenGetNullResponse(): Unit = runBlocking {
         whenever(repository.getUsers()).thenReturn(null)
         getUsers = GetUsers(repository)
         val dataState = getUsers.invoke()
@@ -49,16 +49,16 @@ class GetUsersTest {
     }
 
     @Test
-    fun `should return error when get 404 response`(): Unit = runBlocking {
-        whenever(repository.getUsers()).thenReturn(errorMock)
+    fun shouldReturnErrorWhenGet404Response(): Unit = runBlocking {
+        whenever(repository.getUsers()).thenReturn(error)
         getUsers = GetUsers(repository)
         val dataState = getUsers.invoke()
         assertTrue(dataState is DataState.OnError)
     }
 
     @Test
-    fun `should return success when get response`(): Unit = runBlocking {
-        whenever(repository.getUsers()).thenReturn(successMock)
+    fun shouldReturnSuccessWhenGetResponse(): Unit = runBlocking {
+        whenever(repository.getUsers()).thenReturn(success)
         getUsers = GetUsers(repository)
         val dataState = getUsers.invoke()
         assertTrue(dataState is DataState.OnSuccess)

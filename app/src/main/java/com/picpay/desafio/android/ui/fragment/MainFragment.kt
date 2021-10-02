@@ -80,6 +80,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             binding.includeList.refresh.isRefreshing = false
         }
 
+        // TODO tratar erro ao inserir um favorito no banco (dica se user for null)
+
         viewModel.getPrefsDayNightMode { isNightMode ->
             if (isNightMode) {
                 binding.includeHeader.radioNightMode.isChecked = true
