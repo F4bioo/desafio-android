@@ -102,4 +102,7 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$androidx_junit_version"
     androidTestImplementation "com.google.truth:truth:$truth_version"
     androidTestImplementation "androidx.test:core-ktx:$test_core_ktx_version"
+    androidTestImplementation "androidx.test:rules:$androidx_test_version"
+    androidTestImplementation "androidx.test:runner:$androidx_test_version"
+    androidTestImplementation "com.android.support.test.espresso:espresso-contrib:$expresso_contrib"
 }
