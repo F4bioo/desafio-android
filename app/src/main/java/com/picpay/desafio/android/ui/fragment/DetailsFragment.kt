@@ -47,11 +47,6 @@ class DetailsFragment : BottomSheetDialogFragment() {
         initObserver()
     }
 
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
-    }
-
     private fun viewBiding() {
         binding.apply {
             textUsername.username(user.username)

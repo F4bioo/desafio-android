@@ -1,7 +1,9 @@
 package com.picpay.desafio.android.ui.fragment
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -18,7 +20,7 @@ import com.picpay.desafio.android.utils.extensions.navigateWithAnimations
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
-class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
+class FavoritesFragment : Fragment() {
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<FavoritesViewModel>()
@@ -38,19 +40,22 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
         }
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentFavoritesBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentFavoritesBinding.bind(view)
         viewBiding()
         getFavorites()
         initListeners()
         initObserver()
         initRecyclerView()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
     }
 
     private fun viewBiding() {

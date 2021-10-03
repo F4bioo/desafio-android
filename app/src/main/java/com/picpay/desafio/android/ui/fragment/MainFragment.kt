@@ -1,7 +1,9 @@
 package com.picpay.desafio.android.ui.fragment
 
 import android.os.Bundle
+import android.view.LayoutInflater
 import android.view.View
+import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
@@ -30,7 +32,7 @@ import javax.inject.Inject
 
 @ExperimentalPagingApi
 @AndroidEntryPoint
-class MainFragment : Fragment(R.layout.fragment_main) {
+class MainFragment : Fragment() {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<MainViewModel>()
@@ -57,9 +59,17 @@ class MainFragment : Fragment(R.layout.fragment_main) {
         }
     }
 
+    override fun onCreateView(
+        inflater: LayoutInflater,
+        container: ViewGroup?,
+        savedInstanceState: Bundle?
+    ): View {
+        _binding = FragmentMainBinding.inflate(inflater, container, false)
+        return binding.root
+    }
+
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        _binding = FragmentMainBinding.bind(view)
         viewBiding()
         initObserver()
         initRecyclerView()
@@ -68,9 +78,8 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     override fun onDestroyView() {
-        super.onDestroyView()
-        _binding = null
         adapter.jobCancel()
+        super.onDestroyView()
     }
 
     private fun viewBiding() {
@@ -162,6 +171,11 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun CombinedLoadStates.showEmptyList() {
+        if (binding == null) {
+            println("<> null")
+            return
+        }
+
         binding.includeEmpty.apply {
             val isLoading = refresh is LoadState.Loading
             val isError = refresh is LoadState.Error
