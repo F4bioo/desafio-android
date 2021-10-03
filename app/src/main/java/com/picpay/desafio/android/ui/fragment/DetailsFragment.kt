@@ -60,23 +60,32 @@ class DetailsFragment : BottomSheetDialogFragment() {
             textFirstChar.text = user.name.first().toString()
             imageUser.set(user.img) { textFirstChar.text = "" }
             if (user.favorite) buttonFavorite
-                .favorite(R.drawable.ic_baseline_favorite_selected, R.color.color_favorite)
+                .favorite(R.drawable.ic_baseline_favorite_selected, R.color.color_favorite_selected)
         }
     }
 
     private fun initListeners() {
         binding.apply {
             buttonShare.setOnClickListener {
-
+                viewModel.shareContact(
+                    getString(R.string.share_extra, user.username, user.name),
+                    getString(R.string.share_title)
+                ) { startActivity(it) }
             }
 
             buttonFavorite.setOnClickListener {
                 user.favorite = when (user.favorite) {
                     true -> buttonFavorite
-                        .favorite(R.drawable.ic_baseline_favorite_unselected, R.color.black)
+                        .favorite(
+                            R.drawable.ic_baseline_favorite_unselected,
+                            R.color.color_icon_modal
+                        )
                         .let { false }
                     else -> buttonFavorite
-                        .favorite(R.drawable.ic_baseline_favorite_selected, R.color.color_favorite)
+                        .favorite(
+                            R.drawable.ic_baseline_favorite_selected,
+                            R.color.color_favorite_selected
+                        )
                         .let { true }
                 }
                 viewModel.setFavorite(user)

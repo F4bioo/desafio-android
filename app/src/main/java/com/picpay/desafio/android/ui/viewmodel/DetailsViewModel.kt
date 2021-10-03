@@ -1,5 +1,6 @@
 package com.picpay.desafio.android.ui.viewmodel
 
+import android.content.Intent
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -25,5 +26,23 @@ constructor(
         viewModelScope.launch {
             _setFavoriteEvent.value = setFavorite.invoke(SetFavorite.Params(user))
         }
+    }
+
+    fun shareContact(
+        textExtra: String,
+        textTitle: String,
+        startActivity: (intent: Intent) -> Unit
+    ) {
+        val intent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(
+                Intent.EXTRA_TEXT,
+                textExtra.trimMargin()
+            )
+            type = "text/plain"
+        }
+
+        val shareIntent = Intent.createChooser(intent, textTitle)
+        startActivity(shareIntent)
     }
 }

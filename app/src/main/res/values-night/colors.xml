@@ -3,4 +3,5 @@
     <color name="contact_title">#C1C0C0</color>
     <color name="color_header">#000000</color>
     <color name="window_bg">#191919</color>
+    <color name="color_icon_modal">@color/colorAccent</color>
 </resources>

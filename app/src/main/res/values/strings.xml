@@ -24,6 +24,12 @@
     <!--Details-->
     <string name="favorite">Favorite</string>
     <string name="share">Share</string>
+    <string name="share_title">Share contact</string>
+    <string name="share_extra">"""Hi, I would like to share this contact.
+        |
+        |Username: \@%1$s
+        |Name: %2$s"""
+    </string>
 
     <!--Adapter main-->
     <string name="username">\@%s</string>

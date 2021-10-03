@@ -4,15 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:paddingHorizontal="16dp"
     android:paddingBottom="16dp">
 
     <View
         android:id="@+id/view_drag"
-        android:layout_width="90dp"
-        android:layout_height="4dp"
-        android:layout_alignParentTop="true"
+        android:layout_width="50dp"
+        android:layout_height="5dp"
+        android:background="@drawable/drag_drop_rounded"
+        android:clickable="true"
         android:layout_marginTop="16dp"
-        android:background="#BCBCBC"
+        android:focusable="true"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent" />
