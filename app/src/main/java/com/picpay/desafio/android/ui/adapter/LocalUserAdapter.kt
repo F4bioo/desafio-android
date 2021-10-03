@@ -8,9 +8,9 @@ import androidx.recyclerview.widget.RecyclerView
 import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.databinding.AdapterItemBinding
 import com.picpay.desafio.android.utils.ItemClicked
-import com.picpay.desafio.android.utils.extensions.bg
-import com.picpay.desafio.android.utils.extensions.set
-import com.picpay.desafio.android.utils.extensions.username
+import com.picpay.desafio.android.utils.extensions.ViewExtension.bg
+import com.picpay.desafio.android.utils.extensions.ViewExtension.set
+import com.picpay.desafio.android.utils.extensions.ViewExtension.username
 
 class LocalUserAdapter(
     private val onClickListener: ItemClicked

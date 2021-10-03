@@ -7,8 +7,8 @@ import com.picpay.desafio.android.R
 import com.picpay.desafio.android.utils.Constants
 import com.picpay.desafio.android.utils.Prefs
 import com.picpay.desafio.android.utils.SharedViewModel
-import com.picpay.desafio.android.utils.extensions.setDayNightMode
-import com.picpay.desafio.android.utils.extensions.setStatusBarColor
+import com.picpay.desafio.android.utils.extensions.ViewExtension.setDayNightMode
+import com.picpay.desafio.android.utils.extensions.ViewExtension.setStatusBarColor
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 

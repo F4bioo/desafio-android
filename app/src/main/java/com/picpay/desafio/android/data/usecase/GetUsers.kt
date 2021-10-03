@@ -4,7 +4,7 @@ import com.picpay.desafio.android.data.api.DataState
 import com.picpay.desafio.android.data.api.parseResponse
 import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.data.repository.RemoteRepository
-import com.picpay.desafio.android.utils.extensions.fromDomainsToUsers
+import com.picpay.desafio.android.utils.extensions.MapperExtension.fromDomainsToUsers
 import javax.inject.Inject
 
 class GetUsers

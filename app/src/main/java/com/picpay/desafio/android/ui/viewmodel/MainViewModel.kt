@@ -14,7 +14,7 @@ import com.picpay.desafio.android.data.usecase.GetMediatorData
 import com.picpay.desafio.android.data.usecase.SetFavorite
 import com.picpay.desafio.android.utils.Constants
 import com.picpay.desafio.android.utils.Prefs
-import com.picpay.desafio.android.utils.extensions.fromUserEntityToUser
+import com.picpay.desafio.android.utils.extensions.MapperExtension.fromUserEntityToUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
 import kotlinx.coroutines.launch

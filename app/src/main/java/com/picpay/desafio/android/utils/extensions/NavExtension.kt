@@ -5,23 +5,26 @@ import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import com.picpay.desafio.android.R
 
-private val slideLeftOptions = NavOptions.Builder()
-    .setEnterAnim(R.anim.slide_in_right)
-    .setExitAnim(R.anim.slide_out_left)
-    .setPopEnterAnim(R.anim.slide_in_left)
-    .setPopExitAnim(R.anim.slide_out_right)
-    .build()
+object NavExtension {
 
-fun NavController.navigateWithAnimations(
-    destinationId: Int,
-    animation: NavOptions = slideLeftOptions
-) {
-    this.navigate(destinationId, null, animation)
-}
+    private val slideLeftOptions = NavOptions.Builder()
+        .setEnterAnim(R.anim.slide_in_right)
+        .setExitAnim(R.anim.slide_out_left)
+        .setPopEnterAnim(R.anim.slide_in_left)
+        .setPopExitAnim(R.anim.slide_out_right)
+        .build()
 
-fun NavController.navigateWithAnimations(
-    directions: NavDirections,
-    animation: NavOptions = slideLeftOptions
-) {
-    this.navigate(directions, animation)
+    fun NavController.navigateWithAnimations(
+        destinationId: Int,
+        animation: NavOptions = slideLeftOptions
+    ) {
+        this.navigate(destinationId, null, animation)
+    }
+
+    fun NavController.navigateWithAnimations(
+        directions: NavDirections,
+        animation: NavOptions = slideLeftOptions
+    ) {
+        this.navigate(directions, animation)
+    }
 }

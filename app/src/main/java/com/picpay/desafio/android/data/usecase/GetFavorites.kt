@@ -4,7 +4,7 @@ package com.picpay.desafio.android.data.usecase
 import com.picpay.desafio.android.data.api.DataState
 import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.data.repository.LocalRepository
-import com.picpay.desafio.android.utils.extensions.fromEntitiesToUsers
+import com.picpay.desafio.android.utils.extensions.MapperExtension.fromEntitiesToUsers
 import javax.inject.Inject
 
 class GetFavorites

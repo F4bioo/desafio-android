@@ -3,7 +3,7 @@ package com.picpay.desafio.android.data.usecase
 import com.picpay.desafio.android.data.api.DataState
 import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.data.repository.LocalRepository
-import com.picpay.desafio.android.utils.extensions.fromUserToFavoriteEntity
+import com.picpay.desafio.android.utils.extensions.MapperExtension.fromUserToFavoriteEntity
 import javax.inject.Inject
 
 class SetFavorite

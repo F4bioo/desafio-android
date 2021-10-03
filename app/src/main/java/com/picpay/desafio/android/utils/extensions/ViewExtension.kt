@@ -18,62 +18,65 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import java.util.*
 
-fun ImageView.set(imageUrl: String, onCallBack: () -> Unit) {
-    Picasso.get()
-        .load(imageUrl)
-        .noPlaceholder()
-        .noFade()
-        .into(this, object : Callback {
-            override fun onSuccess() {
-                onCallBack.invoke()
-            }
+object ViewExtension {
 
-            override fun onError(e: Exception?) {
-            }
-        })
-}
+    fun ImageView.set(imageUrl: String, onCallBack: () -> Unit) {
+        Picasso.get()
+            .load(imageUrl)
+            .noPlaceholder()
+            .noFade()
+            .into(this, object : Callback {
+                override fun onSuccess() {
+                    onCallBack.invoke()
+                }
 
-fun ImageView.bg() {
-    Random().apply {
-        val color = Color.argb(
-            125,
-            nextInt(256),
-            nextInt(256),
-            nextInt(256)
-        )
-        setBackgroundColor(color)
+                override fun onError(e: Exception?) {
+                }
+            })
     }
-}
 
-fun Boolean.setDayNightMode() {
-    AppCompatDelegate.setDefaultNightMode(
-        if (this) AppCompatDelegate.MODE_NIGHT_NO
-        else AppCompatDelegate.MODE_NIGHT_YES
-    )
-}
+    fun ImageView.bg() {
+        Random().apply {
+            val color = Color.argb(
+                125,
+                nextInt(256),
+                nextInt(256),
+                nextInt(256)
+            )
+            setBackgroundColor(color)
+        }
+    }
 
-fun Window.setStatusBarColor() {
-    statusBarColor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
-        context.color(R.color.color_header)
-    } else context.color(R.color.black)
-}
+    fun Boolean.setDayNightMode() {
+        AppCompatDelegate.setDefaultNightMode(
+            if (this) AppCompatDelegate.MODE_NIGHT_NO
+            else AppCompatDelegate.MODE_NIGHT_YES
+        )
+    }
 
-fun Context.color(@ColorRes color: Int): Int {
-    return ContextCompat.getColor(this, color)
-}
+    fun Window.setStatusBarColor() {
+        statusBarColor = if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
+            context.color(R.color.color_header)
+        } else context.color(R.color.black)
+    }
 
-fun TextView.username(username: String) {
-    text = context.getString(R.string.username, username)
-}
+    fun Context.color(@ColorRes color: Int): Int {
+        return ContextCompat.getColor(this, color)
+    }
 
-fun NavController.safelyNavigate(directions: NavDirections) = try {
-    navigate(directions)
-} catch (e: Exception) {
-}
+    fun TextView.username(username: String) {
+        text = context.getString(R.string.username, username)
+    }
 
-fun <T> Fragment.getNavResult(key: String = "defKey") =
-    findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<T>(key)
+    fun NavController.safelyNavigate(directions: NavDirections) = try {
+        navigate(directions)
+    } catch (e: Exception) {
+    }
 
-fun <T> Fragment.setNavResult(key: String = "defKey", data: T?) {
-    findNavController().previousBackStackEntry?.savedStateHandle?.set(key, data)
+    fun <T> Fragment.getNavResult(key: String = "defKey") =
+        findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<T>(key)
+
+    fun <T> Fragment.setNavResult(key: String = "defKey", data: T?) {
+        findNavController().previousBackStackEntry?.savedStateHandle?.set(key, data)
+    }
 }
