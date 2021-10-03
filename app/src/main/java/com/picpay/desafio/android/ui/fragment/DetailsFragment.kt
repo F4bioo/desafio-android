@@ -16,10 +16,10 @@ import com.picpay.desafio.android.data.api.DataState
 import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.databinding.FragmentDetailsBinding
 import com.picpay.desafio.android.ui.viewmodel.DetailsViewModel
-import com.picpay.desafio.android.utils.extensions.ViewExtension.bg
-import com.picpay.desafio.android.utils.extensions.ViewExtension.set
-import com.picpay.desafio.android.utils.extensions.ViewExtension.setNavResult
-import com.picpay.desafio.android.utils.extensions.ViewExtension.username
+import com.picpay.desafio.android.utils.extensions.bg
+import com.picpay.desafio.android.utils.extensions.set
+import com.picpay.desafio.android.utils.extensions.setNavResult
+import com.picpay.desafio.android.utils.extensions.username
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint

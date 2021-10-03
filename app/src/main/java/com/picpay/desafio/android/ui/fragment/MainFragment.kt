@@ -22,9 +22,8 @@ import com.picpay.desafio.android.ui.adapter.RemoteUserAdapter
 import com.picpay.desafio.android.ui.adapter.paging.UserLoadState
 import com.picpay.desafio.android.ui.viewmodel.MainViewModel
 import com.picpay.desafio.android.utils.SharedViewModel
-import com.picpay.desafio.android.utils.extensions.NavExtension.navigateWithAnimations
-import com.picpay.desafio.android.utils.extensions.ViewExtension.getNavResult
-import com.picpay.desafio.android.utils.extensions.ViewExtension.safelyNavigate
+import com.picpay.desafio.android.utils.extensions.getNavResult
+import com.picpay.desafio.android.utils.extensions.navigateWithAnimations
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -52,7 +51,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
                 else -> {
                     val directions =
                         MainFragmentDirections.actionMainFragmentToDetailsFragment(user)
-                    findNavController().safelyNavigate(directions)
+                    findNavController().navigateWithAnimations(directions)
                 }
             }
         }

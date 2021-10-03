@@ -1,30 +1,32 @@
 package com.picpay.desafio.android.utils.extensions
 
+import androidx.annotation.IdRes
 import androidx.navigation.NavController
 import androidx.navigation.NavDirections
 import androidx.navigation.NavOptions
 import com.picpay.desafio.android.R
 
-object NavExtension {
+private val slideAnim = NavOptions.Builder()
+    .setEnterAnim(R.anim.slide_in_right)
+    .setExitAnim(R.anim.slide_out_left)
+    .setPopEnterAnim(R.anim.slide_in_left)
+    .setPopExitAnim(R.anim.slide_out_right)
+    .build()
 
-    private val slideLeftOptions = NavOptions.Builder()
-        .setEnterAnim(R.anim.slide_in_right)
-        .setExitAnim(R.anim.slide_out_left)
-        .setPopEnterAnim(R.anim.slide_in_left)
-        .setPopExitAnim(R.anim.slide_out_right)
-        .build()
+private fun NavController.safelyNavigate(@IdRes resId: Int) = try {
+    navigate(resId, null, slideAnim)
+} catch (e: Exception) {
+}
 
-    fun NavController.navigateWithAnimations(
-        destinationId: Int,
-        animation: NavOptions = slideLeftOptions
-    ) {
-        this.navigate(destinationId, null, animation)
-    }
+private fun NavController.safelyNavigate(directions: NavDirections) = try {
+    navigate(directions, slideAnim)
+} catch (e: Exception) {
+}
 
-    fun NavController.navigateWithAnimations(
-        directions: NavDirections,
-        animation: NavOptions = slideLeftOptions
-    ) {
-        this.navigate(directions, animation)
-    }
+fun NavController.navigateWithAnimations(@IdRes resId: Int) {
+    safelyNavigate(resId)
+}
+
+fun NavController.navigateWithAnimations(directions: NavDirections) {
+    safelyNavigate(directions)
 }

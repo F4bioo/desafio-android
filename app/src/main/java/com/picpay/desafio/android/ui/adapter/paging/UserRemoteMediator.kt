@@ -11,7 +11,7 @@ import com.picpay.desafio.android.data.model.UserEntity
 import com.picpay.desafio.android.data.room.PicPayDatabase
 import com.picpay.desafio.android.data.usecase.GetUsers
 import com.picpay.desafio.android.utils.Constants
-import com.picpay.desafio.android.utils.extensions.MapperExtension.fromDomainsToEntities
+import com.picpay.desafio.android.utils.extensions.fromDomainsToEntities
 import retrofit2.HttpException
 import java.io.IOException
 

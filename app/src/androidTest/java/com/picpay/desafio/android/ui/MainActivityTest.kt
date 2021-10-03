@@ -15,8 +15,8 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import com.picpay.desafio.android.R
 import com.picpay.desafio.android.data.model.User
-import com.picpay.desafio.android.utils.RecyclerViewMatchers.atPosition
-import com.picpay.desafio.android.utils.RecyclerViewMatchers.recyclerChildAction
+import com.picpay.desafio.android.utils.extensions.atPosition
+import com.picpay.desafio.android.utils.extensions.recyclerChildAction
 import junit.framework.TestCase
 import org.junit.Rule
 import org.junit.Test
