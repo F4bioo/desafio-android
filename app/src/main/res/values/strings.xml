@@ -11,8 +11,8 @@
 
     <!--Main-->
     <string name="retry">Retry</string>
-    <string name="pagination_reached">The list has reached the end.</string>
-    <string name="pagination_error">Oops! Unable to load data.</string>
+    <string name="generic_error">Oops! Something went wrong.</string>
+    <string name="pagination_error">Unable to load data.</string>
     <string name="ok">OK</string>
     <string name="night_mode">night mode</string>
     <string name="day_mode">day mode</string>

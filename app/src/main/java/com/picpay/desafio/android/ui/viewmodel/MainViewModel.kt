@@ -33,9 +33,9 @@ constructor(
     val pagingEvent: LiveData<PagingData<User>>
         get() = _pagingEvent
 
-    private val _favoriteEvent = MutableLiveData<DataState<User?>>()
-    val favoriteEvent: LiveData<DataState<User?>>
-        get() = _favoriteEvent
+    private val _setFavoriteEvent = MutableLiveData<DataState<User?>>()
+    val setFavoriteEvent: LiveData<DataState<User?>>
+        get() = _setFavoriteEvent
 
     init {
         getUsersFromMediator()
@@ -65,7 +65,7 @@ constructor(
 
     fun setFavorite(user: User) {
         viewModelScope.launch {
-            _favoriteEvent.value = setFavorite.invoke(SetFavorite.Params(user))
+            _setFavoriteEvent.value = setFavorite.invoke(SetFavorite.Params(user))
         }
     }
 }

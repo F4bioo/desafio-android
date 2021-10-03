@@ -1,7 +1,6 @@
 package com.picpay.desafio.android.ui.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import android.widget.CheckBox
 import androidx.lifecycle.Lifecycle
@@ -13,6 +12,7 @@ import com.picpay.desafio.android.data.api.DataState
 import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.data.usecase.GetFavorite
 import com.picpay.desafio.android.databinding.AdapterItemBinding
+import com.picpay.desafio.android.utils.ItemClicked
 import com.picpay.desafio.android.utils.extensions.bg
 import com.picpay.desafio.android.utils.extensions.set
 import com.picpay.desafio.android.utils.extensions.username
@@ -22,7 +22,7 @@ import kotlinx.coroutines.launch
 class RemoteUserAdapter(
     private val lifecycle: Lifecycle,
     private val getFavorite: GetFavorite,
-    private val onClickListener: (view: View, user: User) -> Unit
+    private val onClickListener: ItemClicked
 ) : PagingDataAdapter<User, RemoteUserAdapter.ViewHolder>(RemoteUserAdapter) {
 
     private var job: Job? = null
@@ -51,7 +51,7 @@ class RemoteUserAdapter(
 
     inner class ViewHolder(
         private val biding: AdapterItemBinding,
-        private val onClickListener: (view: View, user: User) -> Unit
+        private val onClickListener: ItemClicked
     ) : RecyclerView.ViewHolder(biding.root) {
 
         fun viewBiding(user: User) {
@@ -65,14 +65,14 @@ class RemoteUserAdapter(
 
                 checkFavorite.setOnClickListener {
                     user.favorite = checkFavorite.isChecked
-                    onClickListener.invoke(it, user)
+                    onClickListener.invoke(it, user, layoutPosition)
                 }
             }
 
             itemView.setOnClickListener {
                 it.postDelayed({
                     user.favorite = biding.checkFavorite.isChecked
-                    onClickListener.invoke(it, user)
+                    onClickListener.invoke(it, user, layoutPosition)
                 }, 300)
             }
         }

@@ -17,13 +17,13 @@ class DetailsViewModel
 constructor(
     private val setFavorite: SetFavorite
 ) : ViewModel() {
-    private val _insertEvent = MutableLiveData<DataState<User?>>()
-    val insertEvent: LiveData<DataState<User?>>
-        get() = _insertEvent
+    private val _setFavoriteEvent = MutableLiveData<DataState<User?>>()
+    val setFavoriteEvent: LiveData<DataState<User?>>
+        get() = _setFavoriteEvent
 
     fun setFavorite(user: User) {
         viewModelScope.launch {
-            _insertEvent.value = setFavorite.invoke(SetFavorite.Params(user))
+            _setFavoriteEvent.value = setFavorite.invoke(SetFavorite.Params(user))
         }
     }
 }

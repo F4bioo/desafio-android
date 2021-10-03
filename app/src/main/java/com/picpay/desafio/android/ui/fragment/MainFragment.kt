@@ -2,6 +2,7 @@ package com.picpay.desafio.android.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
@@ -14,12 +15,14 @@ import androidx.paging.LoadState
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.picpay.desafio.android.R
+import com.picpay.desafio.android.data.api.DataState
 import com.picpay.desafio.android.data.usecase.GetFavorite
 import com.picpay.desafio.android.databinding.FragmentMainBinding
 import com.picpay.desafio.android.ui.adapter.RemoteUserAdapter
 import com.picpay.desafio.android.ui.adapter.paging.UserLoadState
 import com.picpay.desafio.android.ui.viewmodel.MainViewModel
 import com.picpay.desafio.android.utils.SharedViewModel
+import com.picpay.desafio.android.utils.extensions.getNavResult
 import com.picpay.desafio.android.utils.extensions.navigateWithAnimations
 import com.picpay.desafio.android.utils.extensions.safelyNavigate
 import dagger.hilt.android.AndroidEntryPoint
@@ -34,12 +37,14 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     private val viewModel by viewModels<MainViewModel>()
     private val sharedViewModel by activityViewModels<SharedViewModel>()
     private var inOnTop = true
+    private var pos = -1
 
     @Inject
     lateinit var getFavorite: GetFavorite
 
     private val adapter by lazy {
-        RemoteUserAdapter(lifecycle, getFavorite) { view, user ->
+        RemoteUserAdapter(lifecycle, getFavorite) { view, user, position ->
+            pos = position
             when (view.id) {
                 R.id.check_favorite -> {
                     viewModel.setFavorite(user)
@@ -80,12 +85,23 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             binding.includeList.refresh.isRefreshing = false
         }
 
-        // TODO tratar erro ao inserir um favorito no banco (dica se user for null)
+        viewModel.setFavoriteEvent.observe(viewLifecycleOwner) { dataState ->
+            when {
+                dataState is DataState.OnSuccess && dataState.data == null
+                        || dataState is DataState.OnException -> Toast.makeText(
+                    requireContext(), getString(R.string.generic_error), Toast.LENGTH_LONG
+                ).show()
+            }
+        }
 
         viewModel.getPrefsDayNightMode { isNightMode ->
             if (isNightMode) {
                 binding.includeHeader.radioNightMode.isChecked = true
             } else binding.includeHeader.radioDayMode.isChecked = true
+        }
+
+        getNavResult<Unit>()?.observe(viewLifecycleOwner) {
+            adapter.notifyItemChanged(pos)
         }
     }
 

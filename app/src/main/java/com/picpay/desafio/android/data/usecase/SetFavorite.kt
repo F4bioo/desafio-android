@@ -17,8 +17,8 @@ constructor(
             val favoriteEntity = params.user.fromUserToFavoriteEntity()
 
             val result = if (params.user.favorite) {
-                repository.setFavorite(favoriteEntity) != -1L
-            } else repository.delFavorite(favoriteEntity) != -1
+                repository.setFavorite(favoriteEntity) > 0
+            } else repository.delFavorite(favoriteEntity) > 0
 
             if (result) {
                 DataState.OnSuccess(params.user)

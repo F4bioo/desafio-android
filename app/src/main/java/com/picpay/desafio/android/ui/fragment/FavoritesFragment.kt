@@ -2,6 +2,7 @@ package com.picpay.desafio.android.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -12,6 +13,7 @@ import com.picpay.desafio.android.data.api.DataState
 import com.picpay.desafio.android.databinding.FragmentFavoritesBinding
 import com.picpay.desafio.android.ui.adapter.LocalUserAdapter
 import com.picpay.desafio.android.ui.viewmodel.FavoritesViewModel
+import com.picpay.desafio.android.utils.extensions.getNavResult
 import com.picpay.desafio.android.utils.extensions.safelyNavigate
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -22,7 +24,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     private val viewModel by viewModels<FavoritesViewModel>()
 
     private val adapter by lazy {
-        LocalUserAdapter { view, user ->
+        LocalUserAdapter { view, user, _ ->
             when (view.id) {
                 R.id.check_favorite -> {
                     viewModel.setFavorite(user)
@@ -87,12 +89,16 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
         }
 
         viewModel.setFavoritesEvent.observe(viewLifecycleOwner) { dataState ->
-            // TODO tratar caso erro no insert (dica: se o user vier null)
-            if (dataState is DataState.OnSuccess) {
-                view?.postDelayed({
-                    getFavorites()
-                }, 500)
-            }
+            if ((dataState is DataState.OnSuccess && dataState.data == null)
+                || (dataState is DataState.OnException)
+            ) Toast.makeText(
+                requireContext(), getString(R.string.generic_error), Toast.LENGTH_LONG
+            ).show()
+            else view?.postDelayed({ getFavorites() }, 500)
+        }
+
+        getNavResult<Unit>()?.observe(viewLifecycleOwner) {
+            getFavorites()
         }
     }
 

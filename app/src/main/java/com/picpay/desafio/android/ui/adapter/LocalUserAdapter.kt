@@ -1,19 +1,19 @@
 package com.picpay.desafio.android.ui.adapter
 
 import android.view.LayoutInflater
-import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.databinding.AdapterItemBinding
+import com.picpay.desafio.android.utils.ItemClicked
 import com.picpay.desafio.android.utils.extensions.bg
 import com.picpay.desafio.android.utils.extensions.set
 import com.picpay.desafio.android.utils.extensions.username
 
 class LocalUserAdapter(
-    private val onClickListener: (view: View, user: User) -> Unit
+    private val onClickListener: ItemClicked
 ) : ListAdapter<User, LocalUserAdapter.ViewHolder>(LocalUserAdapter) {
 
     private val users = arrayListOf<User>()
@@ -44,7 +44,7 @@ class LocalUserAdapter(
 
     inner class ViewHolder(
         private val biding: AdapterItemBinding,
-        private val onClickListener: (view: View, user: User) -> Unit
+        private val onClickListener: ItemClicked
     ) : RecyclerView.ViewHolder(biding.root) {
 
         fun viewBiding(user: User) {
@@ -58,14 +58,14 @@ class LocalUserAdapter(
 
                 itemView.setOnClickListener {
                     it.postDelayed({
-                        onClickListener(it, user)
+                        onClickListener.invoke(it, user, layoutPosition)
                     }, 300)
                 }
 
                 checkFavorite.setOnClickListener {
                     user.favorite = checkFavorite.isChecked
                     modifyItemList(layoutPosition, user)
-                    onClickListener(it, user)
+                    onClickListener.invoke(it, user, layoutPosition)
                 }
             }
         }
