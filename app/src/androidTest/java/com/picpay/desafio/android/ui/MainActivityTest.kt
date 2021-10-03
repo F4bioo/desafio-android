@@ -15,8 +15,9 @@ import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import com.picpay.desafio.android.R
 import com.picpay.desafio.android.data.model.User
-import com.picpay.desafio.android.utils.extensions.atPosition
-import com.picpay.desafio.android.utils.extensions.recyclerChildAction
+import com.picpay.desafio.android.extensions.atPosition
+import com.picpay.desafio.android.extensions.recyclerChildAction
+import com.picpay.desafio.android.extensions.waitFor
 import junit.framework.TestCase
 import org.junit.Rule
 import org.junit.Test
@@ -27,7 +28,8 @@ import org.junit.runner.RunWith
 @LargeTest
 class MainActivityTest : TestCase() {
 
-    private val context = InstrumentationRegistry.getInstrumentation().targetContext
+    private val context =
+        InstrumentationRegistry.getInstrumentation().targetContext
 
     @Rule
     @JvmField
@@ -35,7 +37,14 @@ class MainActivityTest : TestCase() {
 
     @Test
     fun shouldPassWhenHasTitle() {
-        onView(withText(context.getString(R.string.title))).check(matches(isDisplayed()))
+        onView(withText(context.getString(R.string.title))).perform().check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun shouldPassWhenDayNightModeHasDescription() {
+        onView(withText(context.getString(R.string.day_mode))).check(matches(isDisplayed()))
+
+        onView(withText(context.getString(R.string.night_mode))).check(matches(isDisplayed()))
     }
 
     @Test
@@ -49,6 +58,8 @@ class MainActivityTest : TestCase() {
 
     @Test
     fun shouldPassWhenFavoriteIsChecked() {
+        onView(isRoot()).perform(waitFor())
+
         val position = 4
 
         onView(withId(R.id.recycler)).perform(
@@ -63,6 +74,8 @@ class MainActivityTest : TestCase() {
 
     @Test
     fun shouldPassWhenClickOnRecyclerViewItem() {
+        onView(isRoot()).perform(waitFor())
+
         onView(withId(R.id.recycler)).perform(
             actionOnItemAtPosition<RecyclerView.ViewHolder>(
                 3, click()
@@ -72,6 +85,8 @@ class MainActivityTest : TestCase() {
 
     @Test
     fun shouldPassWhenScrollRecyclerView() {
+        onView(isRoot()).perform(waitFor())
+
         val recyclerView = activityRule.activity.findViewById<RecyclerView>(R.id.recycler)
         recyclerView.adapter?.itemCount?.let { itemCount ->
             onView(withId(R.id.recycler)).perform(
@@ -82,6 +97,8 @@ class MainActivityTest : TestCase() {
 
     @Test
     fun shouldPassWhenRecyclerViewHasItem() {
+        onView(isRoot()).perform(waitFor())
+
         val user = User(
             "1",
             "Sandrine Spinka",
@@ -90,6 +107,7 @@ class MainActivityTest : TestCase() {
         )
 
         onView(withText(user.name)).check(matches(isDisplayed()))
+
         onView(withText("@${user.username}")).check(matches(isDisplayed()))
     }
 }

@@ -39,7 +39,7 @@ class SetFavoriteTest : TestCase() {
     )
 
     @Before
-    fun setup() {
+    public override fun setUp() {
         db = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
             PicPayDatabase::class.java
