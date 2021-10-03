@@ -94,10 +94,10 @@ class MainFragment : Fragment(R.layout.fragment_main) {
             }
         }
 
-        viewModel.getPrefsDayNightMode { isNightMode ->
-            if (isNightMode) {
-                binding.includeHeader.radioNightMode.isChecked = true
-            } else binding.includeHeader.radioDayMode.isChecked = true
+        viewModel.getPrefsDayNightMode { isDayMode ->
+            if (isDayMode) {
+                binding.includeHeader.radioDayMode.isChecked = true
+            } else binding.includeHeader.radioNightMode.isChecked = true
         }
 
         getNavResult<Unit>()?.observe(viewLifecycleOwner) {
@@ -134,7 +134,7 @@ class MainFragment : Fragment(R.layout.fragment_main) {
 
         binding.includeHeader.radioGroup.setOnCheckedChangeListener { _, checkedId ->
             when (checkedId) {
-                R.id.radio_night_mode -> viewModel.setPrefsDayNightMode(true) {
+                R.id.radio_day_mode -> viewModel.setPrefsDayNightMode(true) {
                     sharedViewModel.setResult(true)
                 }
 

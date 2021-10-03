@@ -51,15 +51,15 @@ constructor(
         }
     }
 
-    fun getPrefsDayNightMode(notify: (isNightMode: Boolean) -> Unit) {
-        val isNightMode = prefs.getBoolean(
+    fun getPrefsDayNightMode(notify: (isDayMode: Boolean) -> Unit) {
+        val isDayMode = prefs.getBoolean(
             Constants.KEY_DAY_NIGHT_MODE, true
         )
-        notify.invoke(isNightMode)
+        notify.invoke(isDayMode)
     }
 
-    fun setPrefsDayNightMode(isNightMode: Boolean, notify: () -> Unit) {
-        prefs.setBoolean(Constants.KEY_DAY_NIGHT_MODE, isNightMode)
+    fun setPrefsDayNightMode(isDayMode: Boolean, notify: () -> Unit) {
+        prefs.setBoolean(Constants.KEY_DAY_NIGHT_MODE, isDayMode)
         notify.invoke()
     }
 

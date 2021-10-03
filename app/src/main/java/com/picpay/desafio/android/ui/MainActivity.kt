@@ -26,17 +26,17 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun initDayNightMode() {
-        val isNightMode = prefs.getBoolean(
+        val isDayMode = prefs.getBoolean(
             Constants.KEY_DAY_NIGHT_MODE, true
         )
-        isNightMode.setDayNightMode()
+        isDayMode.setDayNightMode()
         window.setStatusBarColor()
     }
 
     private fun initObserver() {
         val sharedViewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
-        sharedViewModel.getResult<Boolean>().observe(this) { isNightMode ->
-            isNightMode.setDayNightMode()
+        sharedViewModel.getResult<Boolean>().observe(this) { isDayMode ->
+            isDayMode.setDayNightMode()
         }
     }
 }
