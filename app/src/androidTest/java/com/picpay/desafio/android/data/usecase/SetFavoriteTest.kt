@@ -10,7 +10,7 @@ import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.data.repository.LocalRepository
 import com.picpay.desafio.android.data.room.FavoriteDao
 import com.picpay.desafio.android.data.room.PicPayDatabase
-import com.picpay.desafio.android.utils.extensions.MapperExtension.fromEntitiesToUsers
+import com.picpay.desafio.android.utils.extensions.fromEntitiesToUsers
 import junit.framework.TestCase
 import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
