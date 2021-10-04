@@ -16,7 +16,6 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.RecyclerView
 import com.picpay.desafio.android.R
 import com.picpay.desafio.android.data.api.DataState
-import com.picpay.desafio.android.data.usecase.GetFavorite
 import com.picpay.desafio.android.databinding.FragmentMainBinding
 import com.picpay.desafio.android.ui.adapter.RemoteUserAdapter
 import com.picpay.desafio.android.ui.adapter.paging.UserLoadState
@@ -25,37 +24,20 @@ import com.picpay.desafio.android.utils.SharedViewModel
 import com.picpay.desafio.android.utils.extensions.getNavResult
 import com.picpay.desafio.android.utils.extensions.navigateWithAnimations
 import dagger.hilt.android.AndroidEntryPoint
-import javax.inject.Inject
 
 
 @ExperimentalPagingApi
 @AndroidEntryPoint
-class MainFragment : Fragment(R.layout.fragment_main) {
+class MainFragment constructor(
+    private val adapter: RemoteUserAdapter
+) : Fragment(R.layout.fragment_main) {
+
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<MainViewModel>()
     private val sharedViewModel by activityViewModels<SharedViewModel>()
     private var inOnTop = true
     private var pos = -1
-
-    @Inject
-    lateinit var getFavorite: GetFavorite
-
-    private val adapter by lazy {
-        RemoteUserAdapter(lifecycle, getFavorite) { view, user, position ->
-            pos = position
-            when (view.id) {
-                R.id.check_favorite -> {
-                    viewModel.setFavorite(user)
-                }
-                else -> {
-                    val directions =
-                        MainFragmentDirections.actionMainFragmentToDetailsFragment(user)
-                    findNavController().navigateWithAnimations(directions)
-                }
-            }
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -112,6 +94,20 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun initListeners() {
+        adapter.setOnItemClickListener { view, user, position ->
+            pos = position
+            when (view.id) {
+                R.id.check_favorite -> {
+                    viewModel.setFavorite(user)
+                }
+                else -> {
+                    val directions =
+                        MainFragmentDirections.actionMainFragmentToDetailsFragment(user)
+                    findNavController().navigateWithAnimations(directions)
+                }
+            }
+        }
+
         binding.includeList.recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -161,11 +157,6 @@ class MainFragment : Fragment(R.layout.fragment_main) {
     }
 
     private fun CombinedLoadStates.showEmptyList() {
-        if (binding == null) {
-            println("<> null")
-            return
-        }
-
         binding.includeEmpty.apply {
             val isLoading = refresh is LoadState.Loading
             val isError = refresh is LoadState.Error

@@ -18,6 +18,7 @@ class DetailsViewModel
 constructor(
     private val setFavorite: SetFavorite
 ) : ViewModel() {
+
     private val _setFavoriteEvent = MutableLiveData<DataState<User?>>()
     val setFavoriteEvent: LiveData<DataState<User?>>
         get() = _setFavoriteEvent

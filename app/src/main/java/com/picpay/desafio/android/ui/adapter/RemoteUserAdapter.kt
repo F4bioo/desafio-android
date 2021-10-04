@@ -3,8 +3,6 @@ package com.picpay.desafio.android.ui.adapter
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.CheckBox
-import androidx.lifecycle.Lifecycle
-import androidx.lifecycle.coroutineScope
 import androidx.paging.PagingDataAdapter
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.RecyclerView
@@ -16,16 +14,16 @@ import com.picpay.desafio.android.utils.extensions.ItemClicked
 import com.picpay.desafio.android.utils.extensions.bg
 import com.picpay.desafio.android.utils.extensions.set
 import com.picpay.desafio.android.utils.extensions.username
-import kotlinx.coroutines.Job
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
+import javax.inject.Inject
 
-class RemoteUserAdapter(
-    private val lifecycle: Lifecycle,
-    private val getFavorite: GetFavorite,
-    private val onClickListener: ItemClicked
+class RemoteUserAdapter @Inject
+constructor(
+    private val getFavorite: GetFavorite
 ) : PagingDataAdapter<User, RemoteUserAdapter.ViewHolder>(RemoteUserAdapter) {
 
     private var job: Job? = null
+    private var onClickListener: ItemClicked? = null
 
     private companion object : DiffUtil.ItemCallback<User>() {
         override fun areItemsTheSame(oldItem: User, newItem: User): Boolean {
@@ -41,7 +39,7 @@ class RemoteUserAdapter(
         val biding = AdapterItemBinding.inflate(
             LayoutInflater.from(parent.context), parent, false
         )
-        return ViewHolder(biding, onClickListener)
+        return ViewHolder(biding)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
@@ -50,8 +48,7 @@ class RemoteUserAdapter(
     }
 
     inner class ViewHolder(
-        private val biding: AdapterItemBinding,
-        private val onClickListener: ItemClicked
+        private val biding: AdapterItemBinding
     ) : RecyclerView.ViewHolder(biding.root) {
 
         fun viewBiding(user: User) {
@@ -65,28 +62,34 @@ class RemoteUserAdapter(
 
                 checkFavorite.setOnClickListener {
                     user.favorite = checkFavorite.isChecked
-                    onClickListener.invoke(it, user, layoutPosition)
+                    onClickListener?.invoke(it, user, layoutPosition)
                 }
             }
 
             itemView.setOnClickListener {
                 it.postDelayed({
                     user.favorite = biding.checkFavorite.isChecked
-                    onClickListener.invoke(it, user, layoutPosition)
+                    onClickListener?.invoke(it, user, layoutPosition)
                 }, 300)
             }
         }
     }
 
     private fun CheckBox.isFavorite(id: String) {
-        job = lifecycle.coroutineScope.launch {
+        job = CoroutineScope(Dispatchers.IO).launch {
             val dataState = getFavorite.invoke(GetFavorite.Params(id))
-            isChecked = dataState is DataState.OnSuccess
-                    && dataState.data != null
+            withContext(Dispatchers.Main) {
+                isChecked = dataState is DataState.OnSuccess
+                        && dataState.data != null
+            }
         }
     }
 
     fun jobCancel() {
         job?.cancel()
+    }
+
+    fun setOnItemClickListener(ItemClicked: ItemClicked) {
+        onClickListener = ItemClicked
     }
 }

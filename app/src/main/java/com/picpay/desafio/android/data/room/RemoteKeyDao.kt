@@ -8,6 +8,7 @@ import com.picpay.desafio.android.data.model.RemoteKeyEntity
 
 @Dao
 interface RemoteKeyDao {
+
     @Insert(onConflict = OnConflictStrategy.IGNORE)
     suspend fun setAllRemoteKeys(remoteKeys: List<RemoteKeyEntity>)
 

@@ -6,6 +6,7 @@ import androidx.lifecycle.ViewModel
 
 @Suppress("UNCHECKED_CAST")
 class SharedViewModel : ViewModel() {
+
     private val _resultEvent = MutableLiveData<Any>()
 
     fun <T : Any> getResult(): LiveData<T> {

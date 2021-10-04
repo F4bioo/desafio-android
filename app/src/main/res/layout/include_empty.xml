@@ -4,6 +4,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
+    <!--TODO add Nested Scroll View here-->
+
     <ImageView
         android:id="@+id/image_empty"
         android:layout_width="150dp"

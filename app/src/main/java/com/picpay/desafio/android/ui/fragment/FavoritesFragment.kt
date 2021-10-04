@@ -3,6 +3,7 @@ package com.picpay.desafio.android.ui.fragment
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.viewModels
@@ -16,27 +17,17 @@ import com.picpay.desafio.android.ui.viewmodel.FavoritesViewModel
 import com.picpay.desafio.android.utils.extensions.getNavResult
 import com.picpay.desafio.android.utils.extensions.navigateWithAnimations
 import dagger.hilt.android.AndroidEntryPoint
+import javax.inject.Inject
 
 @AndroidEntryPoint
-class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
+class FavoritesFragment
+@Inject constructor(
+    private var adapter: LocalUserAdapter
+) : Fragment(R.layout.fragment_favorites) {
+
     private var _binding: FragmentFavoritesBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<FavoritesViewModel>()
-
-    private val adapter by lazy {
-        LocalUserAdapter { view, user, _ ->
-            when (view.id) {
-                R.id.check_favorite -> {
-                    viewModel.setFavorite(user)
-                }
-                else -> {
-                    val directions =
-                        FavoritesFragmentDirections.actionFavoritesFragmentToDetailsFragment(user)
-                    findNavController().navigateWithAnimations(directions)
-                }
-            }
-        }
-    }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
@@ -46,6 +37,7 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
         initListeners()
         initObserver()
         initRecyclerView()
+        initOnBackDispatcher()
     }
 
     private fun viewBiding() {
@@ -62,6 +54,19 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
     }
 
     private fun initListeners() {
+        adapter.setOnItemClickListener { view, user, position ->
+            when (view.id) {
+                R.id.check_favorite -> {
+                    viewModel.setFavorite(user)
+                }
+                else -> {
+                    val directions =
+                        FavoritesFragmentDirections.actionFavoritesFragmentToDetailsFragment(user)
+                    findNavController().navigateWithAnimations(directions)
+                }
+            }
+        }
+
         binding.includeHeader.buttonArrow.setOnClickListener {
             findNavController().popBackStack()
         }
@@ -112,5 +117,15 @@ class FavoritesFragment : Fragment(R.layout.fragment_favorites) {
 
     private fun getFavorites() {
         viewModel.getFavorites()
+    }
+
+    private fun initOnBackDispatcher() {
+        requireActivity().apply {
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    findNavController().popBackStack()
+                }
+            }.let { onBackPressedDispatcher.addCallback(it) }
+        }
     }
 }

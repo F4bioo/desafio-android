@@ -5,6 +5,7 @@ import com.picpay.desafio.android.data.model.FavoriteEntity
 
 @Dao
 interface FavoriteDao {
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun setFavorite(favoriteEntity: FavoriteEntity): Long
 

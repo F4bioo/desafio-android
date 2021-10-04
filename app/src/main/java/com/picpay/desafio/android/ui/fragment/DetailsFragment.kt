@@ -24,6 +24,7 @@ import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
 class DetailsFragment : BottomSheetDialogFragment() {
+
     private var _binding: FragmentDetailsBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<DetailsViewModel>()

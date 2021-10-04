@@ -10,6 +10,7 @@ class RemoteRepository
 constructor(
     private val api: PicPayService
 ) : Repository.RemoteData {
+
     override suspend fun getUsers(): Response<List<UserDomain>?>? {
         return api.getUsers()
     }

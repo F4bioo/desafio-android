@@ -9,6 +9,7 @@ import com.picpay.desafio.android.data.model.UserEntity
 
 @Dao
 interface UserDao {
+
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     suspend fun setAllUsers(users: List<UserEntity>)
 

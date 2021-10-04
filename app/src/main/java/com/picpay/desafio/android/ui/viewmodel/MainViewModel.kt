@@ -29,6 +29,7 @@ constructor(
     private val getMediatorData: GetMediatorData,
     private val prefs: Prefs
 ) : ViewModel() {
+
     private val _pagingEvent = MutableLiveData<PagingData<User>>()
     val pagingEvent: LiveData<PagingData<User>>
         get() = _pagingEvent

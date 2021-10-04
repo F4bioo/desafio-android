@@ -11,6 +11,7 @@ import com.picpay.desafio.android.data.model.UserEntity
     version = 1
 )
 abstract class PicPayDatabase : RoomDatabase() {
+
     abstract fun userDao(): UserDao
 
     abstract fun keyDao(): RemoteKeyDao
