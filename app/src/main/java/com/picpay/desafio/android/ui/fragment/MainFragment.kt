@@ -1,9 +1,7 @@
 package com.picpay.desafio.android.ui.fragment
 
 import android.os.Bundle
-import android.view.LayoutInflater
 import android.view.View
-import android.view.ViewGroup
 import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
@@ -32,7 +30,7 @@ import javax.inject.Inject
 
 @ExperimentalPagingApi
 @AndroidEntryPoint
-class MainFragment : Fragment() {
+class MainFragment : Fragment(R.layout.fragment_main) {
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<MainViewModel>()
@@ -59,22 +57,14 @@ class MainFragment : Fragment() {
         }
     }
 
-    override fun onCreateView(
-        inflater: LayoutInflater,
-        container: ViewGroup?,
-        savedInstanceState: Bundle?
-    ): View {
-        _binding = FragmentMainBinding.inflate(inflater, container, false)
-        return binding.root
-    }
-
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+        _binding = FragmentMainBinding.bind(view)
         viewBiding()
         initObserver()
         initRecyclerView()
         initListeners()
-        handleOnBackPressed()
+        initOnBackDispatcher()
     }
 
     override fun onDestroyView() {
@@ -195,17 +185,15 @@ class MainFragment : Fragment() {
         }
     }
 
-    private fun handleOnBackPressed() {
-        val fa = requireActivity()
-        val callback = object : OnBackPressedCallback(true) {
-            override fun handleOnBackPressed() {
-                if (inOnTop) {
-                    fa.finish()
-                } else binding.includeList.recycler
-                    .smoothScrollToPosition(0)
-            }
+    private fun initOnBackDispatcher() {
+        requireActivity().apply {
+            object : OnBackPressedCallback(true) {
+                override fun handleOnBackPressed() {
+                    if (inOnTop) finish()
+                    else binding.includeList.recycler
+                        .smoothScrollToPosition(0)
+                }
+            }.let { onBackPressedDispatcher.addCallback(it) }
         }
-        fa.onBackPressedDispatcher
-            .addCallback(viewLifecycleOwner, callback)
     }
 }
