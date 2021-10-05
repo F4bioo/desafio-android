@@ -7,7 +7,10 @@ import android.view.ViewGroup
 import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
+import androidx.core.os.bundleOf
+import androidx.fragment.app.setFragmentResult
 import androidx.fragment.app.viewModels
+import androidx.navigation.fragment.findNavController
 import androidx.navigation.fragment.navArgs
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.google.android.material.button.MaterialButton
@@ -16,9 +19,9 @@ import com.picpay.desafio.android.data.api.DataState
 import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.databinding.FragmentDetailsBinding
 import com.picpay.desafio.android.ui.viewmodel.DetailsViewModel
+import com.picpay.desafio.android.utils.Constants
 import com.picpay.desafio.android.utils.extensions.bg
 import com.picpay.desafio.android.utils.extensions.set
-import com.picpay.desafio.android.utils.extensions.setNavResult
 import com.picpay.desafio.android.utils.extensions.username
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -43,6 +46,10 @@ class DetailsFragment : BottomSheetDialogFragment() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         user = args.detailsArgs
+        if (!this::user.isInitialized) {
+            findNavController().popBackStack()
+            return
+        }
         viewBiding()
         initListeners()
         initObserver()
@@ -96,8 +103,8 @@ class DetailsFragment : BottomSheetDialogFragment() {
                         || dataState is DataState.OnException -> Toast.makeText(
                     requireContext(), getString(R.string.generic_error), Toast.LENGTH_LONG
                 ).show()
+                else -> setFragmentResult(Constants.KEY_FAVORITE, bundleOf())
             }
-            setNavResult(data = null)
         }
     }
 

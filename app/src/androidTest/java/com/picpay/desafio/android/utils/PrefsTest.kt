@@ -16,7 +16,7 @@ class PrefsTest : TestCase() {
     private lateinit var prefs: Prefs
 
     @Before
-    public override fun setUp() {
+    fun setup() {
         val context = InstrumentationRegistry.getInstrumentation().targetContext
         sharedPreferences =
             context.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE)

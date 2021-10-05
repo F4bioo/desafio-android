@@ -1,31 +1,37 @@
 package com.picpay.desafio.android.data.usecase
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import com.nhaarman.mockitokotlin2.mock
-import com.nhaarman.mockitokotlin2.times
-import com.nhaarman.mockitokotlin2.verify
-import com.nhaarman.mockitokotlin2.whenever
 import com.picpay.desafio.android.data.api.DataState
 import com.picpay.desafio.android.data.model.UserDomain
 import com.picpay.desafio.android.data.repository.RemoteRepository
 import dev.thiagosouto.butler.file.readFile
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import okhttp3.MediaType.Companion.toMediaTypeOrNull
 import okhttp3.ResponseBody.Companion.toResponseBody
 import org.junit.Assert.assertTrue
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
+import org.mockito.kotlin.mock
+import org.mockito.kotlin.times
+import org.mockito.kotlin.verify
+import org.mockito.kotlin.whenever
 import retrofit2.Response
 
-@ExperimentalCoroutinesApi
 class GetUsersTest {
 
     @get:Rule
     val rule = InstantTaskExecutorRule()
 
-    private val repository: RemoteRepository = mock()
+    private lateinit var repository: RemoteRepository
     private lateinit var getUsers: GetUsers
+
+    @Before
+    fun setup() {
+        repository = mock {
+            getUsers = GetUsers(this.mock)
+        }
+    }
 
     private val success: Response<List<UserDomain>?>? = Response.success(arrayListOf())
     private val errorBody = readFile("json/error_body.json")
@@ -35,7 +41,6 @@ class GetUsersTest {
 
     @Test
     fun shouldPassWhenCallApiFromRepository(): Unit = runBlocking {
-        getUsers = GetUsers(repository)
         getUsers.invoke()
         verify(repository, times(1)).getUsers()
     }
@@ -43,7 +48,6 @@ class GetUsersTest {
     @Test
     fun shouldReturnExceptionWhenGetNullResponse(): Unit = runBlocking {
         whenever(repository.getUsers()).thenReturn(null)
-        getUsers = GetUsers(repository)
         val dataState = getUsers.invoke()
         assertTrue(dataState is DataState.OnException)
     }
@@ -51,7 +55,6 @@ class GetUsersTest {
     @Test
     fun shouldReturnErrorWhenGet404Response(): Unit = runBlocking {
         whenever(repository.getUsers()).thenReturn(error)
-        getUsers = GetUsers(repository)
         val dataState = getUsers.invoke()
         assertTrue(dataState is DataState.OnError)
     }
@@ -59,7 +62,6 @@ class GetUsersTest {
     @Test
     fun shouldReturnSuccessWhenGetResponse(): Unit = runBlocking {
         whenever(repository.getUsers()).thenReturn(success)
-        getUsers = GetUsers(repository)
         val dataState = getUsers.invoke()
         assertTrue(dataState is DataState.OnSuccess)
     }

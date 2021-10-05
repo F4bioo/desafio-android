@@ -6,6 +6,7 @@ import android.widget.Toast
 import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.recyclerview.widget.LinearLayoutManager
@@ -14,8 +15,8 @@ import com.picpay.desafio.android.data.api.DataState
 import com.picpay.desafio.android.databinding.FragmentFavoritesBinding
 import com.picpay.desafio.android.ui.adapter.LocalUserAdapter
 import com.picpay.desafio.android.ui.viewmodel.FavoritesViewModel
-import com.picpay.desafio.android.utils.extensions.getNavResult
-import com.picpay.desafio.android.utils.extensions.navigateWithAnimations
+import com.picpay.desafio.android.utils.Constants
+import com.picpay.desafio.android.utils.extensions.safelyNavigate
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -42,7 +43,7 @@ class FavoritesFragment
 
     private fun viewBiding() {
         binding.includeHeader.apply {
-            textTitle.text = getString(R.string.favorites)
+            textTitle.text = getString(R.string.favorites_title)
             radioGroup.isVisible = false
             buttonArrow.isVisible = true
         }
@@ -54,7 +55,7 @@ class FavoritesFragment
     }
 
     private fun initListeners() {
-        adapter.setOnItemClickListener { view, user, position ->
+        adapter.setOnItemClickListener { view, user, _ ->
             when (view.id) {
                 R.id.check_favorite -> {
                     viewModel.setFavorite(user)
@@ -62,7 +63,7 @@ class FavoritesFragment
                 else -> {
                     val directions =
                         FavoritesFragmentDirections.actionFavoritesFragmentToDetailsFragment(user)
-                    findNavController().navigateWithAnimations(directions)
+                    findNavController().safelyNavigate(directions)
                 }
             }
         }
@@ -97,7 +98,7 @@ class FavoritesFragment
             else view?.postDelayed({ getFavorites() }, 500)
         }
 
-        getNavResult<Unit>()?.observe(viewLifecycleOwner) {
+        setFragmentResultListener(Constants.KEY_FAVORITE) { _, _ ->
             getFavorites()
         }
     }
@@ -111,7 +112,7 @@ class FavoritesFragment
     }
 
     private fun emptyLayout() {
-        binding.includeEmpty.root.isVisible =
+        binding.includeEmpty.emptyLayout.isVisible =
             adapter.itemCount == 0
     }
 

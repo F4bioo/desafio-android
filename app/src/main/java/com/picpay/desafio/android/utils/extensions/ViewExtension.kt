@@ -9,8 +9,6 @@ import android.widget.TextView
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
-import androidx.fragment.app.Fragment
-import androidx.navigation.fragment.findNavController
 import com.picpay.desafio.android.R
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
@@ -62,11 +60,4 @@ fun Context.color(@ColorRes color: Int): Int {
 
 fun TextView.username(username: String) {
     text = context.getString(R.string.username, username)
-}
-
-fun <T> Fragment.getNavResult(key: String = "defKey") =
-    findNavController().currentBackStackEntry?.savedStateHandle?.getLiveData<T>(key)
-
-fun <T> Fragment.setNavResult(key: String = "defKey", data: T?) {
-    findNavController().previousBackStackEntry?.savedStateHandle?.set(key, data)
 }

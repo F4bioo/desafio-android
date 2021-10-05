@@ -7,6 +7,7 @@ import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.activityViewModels
+import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
@@ -20,9 +21,9 @@ import com.picpay.desafio.android.databinding.FragmentMainBinding
 import com.picpay.desafio.android.ui.adapter.RemoteUserAdapter
 import com.picpay.desafio.android.ui.adapter.paging.UserLoadState
 import com.picpay.desafio.android.ui.viewmodel.MainViewModel
+import com.picpay.desafio.android.utils.Constants
 import com.picpay.desafio.android.utils.SharedViewModel
-import com.picpay.desafio.android.utils.extensions.getNavResult
-import com.picpay.desafio.android.utils.extensions.navigateWithAnimations
+import com.picpay.desafio.android.utils.extensions.safelyNavigate
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -80,7 +81,7 @@ class MainFragment constructor(
             } else binding.includeHeader.radioNightMode.isChecked = true
         }
 
-        getNavResult<Unit>()?.observe(viewLifecycleOwner) {
+        setFragmentResultListener(Constants.KEY_FAVORITE) { _, _ ->
             adapter.notifyItemChanged(pos)
         }
     }
@@ -103,7 +104,7 @@ class MainFragment constructor(
                 else -> {
                     val directions =
                         MainFragmentDirections.actionMainFragmentToDetailsFragment(user)
-                    findNavController().navigateWithAnimations(directions)
+                    findNavController().safelyNavigate(directions)
                 }
             }
         }
@@ -147,8 +148,7 @@ class MainFragment constructor(
         }
 
         binding.fab.setOnClickListener {
-            findNavController()
-                .navigateWithAnimations(R.id.action_mainFragment_to_favoritesFragment)
+            findNavController().navigate(R.id.action_mainFragment_to_favoritesFragment)
         }
 
         binding.includeList.refresh.setOnRefreshListener {
@@ -161,7 +161,7 @@ class MainFragment constructor(
             val isLoading = refresh is LoadState.Loading
             val isError = refresh is LoadState.Error
 
-            root.isVisible = ((isLoading || isError) && adapter.itemCount == 0)
+            emptyLayout.isVisible = ((isLoading || isError) && adapter.itemCount == 0)
             buttonRetry.isVisible = isLoading.apply {
                 progressEmpty.isVisible = !this
             }

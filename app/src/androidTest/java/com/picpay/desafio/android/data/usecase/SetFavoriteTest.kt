@@ -12,7 +12,6 @@ import com.picpay.desafio.android.data.room.FavoriteDao
 import com.picpay.desafio.android.data.room.PicPayDatabase
 import com.picpay.desafio.android.utils.extensions.fromEntitiesToUsers
 import junit.framework.TestCase
-import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.runBlocking
 import org.junit.After
 import org.junit.Before
@@ -20,7 +19,6 @@ import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
 
-@ExperimentalCoroutinesApi
 @RunWith(AndroidJUnit4::class)
 @SmallTest
 class SetFavoriteTest : TestCase() {
@@ -39,7 +37,7 @@ class SetFavoriteTest : TestCase() {
     )
 
     @Before
-    public override fun setUp() {
+    fun setup() {
         db = Room.inMemoryDatabaseBuilder(
             ApplicationProvider.getApplicationContext(),
             PicPayDatabase::class.java

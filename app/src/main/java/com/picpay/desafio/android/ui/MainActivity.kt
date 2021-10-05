@@ -1,8 +1,8 @@
 package com.picpay.desafio.android.ui
 
 import android.os.Bundle
+import androidx.activity.viewModels
 import androidx.appcompat.app.AppCompatActivity
-import androidx.lifecycle.ViewModelProvider
 import com.picpay.desafio.android.R
 import com.picpay.desafio.android.utils.Constants
 import com.picpay.desafio.android.utils.Prefs
@@ -19,6 +19,8 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     @Inject
     lateinit var prefs: Prefs
 
+    private val sharedViewModel by viewModels<SharedViewModel>()
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initDayNightMode()
@@ -34,7 +36,6 @@ class MainActivity : AppCompatActivity(R.layout.activity_main) {
     }
 
     private fun initObserver() {
-        val sharedViewModel = ViewModelProvider(this).get(SharedViewModel::class.java)
         sharedViewModel.getResult<Boolean>().observe(this) { isDayMode ->
             isDayMode.setDayNightMode()
         }

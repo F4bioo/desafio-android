@@ -1,32 +1,35 @@
-package com.picpay.desafio.android.ui
-
+package com.picpay.desafio.android.ui.fragment
 
 import android.widget.CheckBox
+import androidx.navigation.NavController
+import androidx.navigation.Navigation
+import androidx.paging.ExperimentalPagingApi
 import androidx.recyclerview.widget.RecyclerView
 import androidx.test.espresso.Espresso.onView
 import androidx.test.espresso.action.ViewActions.click
 import androidx.test.espresso.assertion.ViewAssertions.matches
 import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
-import androidx.test.espresso.contrib.RecyclerViewActions.scrollToPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
-import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.MediumTest
 import androidx.test.platform.app.InstrumentationRegistry
-import androidx.test.rule.ActivityTestRule
 import com.picpay.desafio.android.R
 import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.extensions.atPosition
+import com.picpay.desafio.android.extensions.launchFragmentInHiltContainer
 import com.picpay.desafio.android.extensions.recyclerChildAction
 import com.picpay.desafio.android.extensions.waitFor
-import junit.framework.TestCase
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
+import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
-import org.junit.runner.RunWith
+import org.mockito.Mockito
+import javax.inject.Inject
 
-
-@RunWith(AndroidJUnit4::class)
+@ExperimentalPagingApi
+@HiltAndroidTest
 @MediumTest
-class MainActivityTest : TestCase() {
+class MainFragmentTest {
 
     private val context =
         InstrumentationRegistry.getInstrumentation().targetContext
@@ -38,9 +41,22 @@ class MainActivityTest : TestCase() {
         "Tod86"
     )
 
-    @Rule
-    @JvmField
-    var activityRule = ActivityTestRule(MainActivity::class.java)
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
+
+    @Inject
+    lateinit var fragmentFactory: AppFragmentFactory
+
+    private lateinit var fragment: MainFragment
+
+    @Before
+    fun setup() {
+        hiltRule.inject()
+
+        launchFragmentInHiltContainer<MainFragment>(factory = fragmentFactory) {
+            fragment = this
+        }
+    }
 
     @Test
     fun shouldPassWhenHasTitle() {
@@ -81,34 +97,29 @@ class MainActivityTest : TestCase() {
     }
 
     @Test
-    fun shouldPassWhenClickOnRecyclerViewItem() {
-        onView(isRoot()).perform(waitFor())
-
-        onView(withId(R.id.recycler)).perform(
-            actionOnItemAtPosition<RecyclerView.ViewHolder>(
-                3, click()
-            )
-        )
-    }
-
-    @Test
-    fun shouldPassWhenScrollRecyclerView() {
-        onView(isRoot()).perform(waitFor())
-
-        val recyclerView = activityRule.activity.findViewById<RecyclerView>(R.id.recycler)
-        recyclerView.adapter?.itemCount?.let { itemCount ->
-            onView(withId(R.id.recycler)).perform(
-                scrollToPosition<RecyclerView.ViewHolder>(itemCount.minus(1))
-            )
-        }
-    }
-
-    @Test
     fun shouldPassWhenRecyclerViewHasItem() {
         onView(isRoot()).perform(waitFor())
 
         onView(withText(user.name)).check(matches(isDisplayed()))
 
         onView(withText("@${user.username}")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun shouldPassWhenClickOnFabButton() {
+        val navController = Mockito.mock(NavController::class.java)
+
+        fragment.apply {
+            Navigation.setViewNavController(requireView(), navController)
+        }
+
+        onView(withId(R.id.fab)).perform(click())
+
+        Mockito.verify(navController).navigate(
+            R.id.action_mainFragment_to_favoritesFragment
+        )
+
+        onView(withText(context.getString(R.string.favorites_title))).perform()
+            .check(matches(isDisplayed()))
     }
 }

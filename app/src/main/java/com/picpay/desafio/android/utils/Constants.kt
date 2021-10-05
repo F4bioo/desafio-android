@@ -6,6 +6,7 @@ object Constants {
     const val DATABASE_NAME = "users.db"
     const val PREFERENCES = "Preferences"
     const val KEY_DAY_NIGHT_MODE = "keyDayNightMode"
+    const val KEY_FAVORITE = "keyFavorite"
 
     const val PAGE_INDEX = 1
     const val PAGE_SIZE = 10

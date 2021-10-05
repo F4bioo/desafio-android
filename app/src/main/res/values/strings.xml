@@ -1,7 +1,6 @@
 <resources>
     <!--App-->
     <string name="app_name">PicPay</string>
-    <string name="title">Contacts</string>
 
     <!-- Accessibility -->
     <string name="desc_favorite">Favorite button</string>
@@ -10,16 +9,17 @@
     <string name="desc_arrow_back">Arrow back</string>
 
     <!--Main-->
+    <string name="main_title">Contacts</string>
     <string name="retry">Retry</string>
     <string name="generic_error">Oops! Something went wrong.</string>
     <string name="pagination_error">Unable to load data.</string>
     <string name="ok">OK</string>
     <string name="night_mode">night mode</string>
     <string name="day_mode">day mode</string>
-    <string name="favorites">Favorites</string>
 
     <!--Favorites-->
-    <string name="favorites_empty_list">The favorites list is empty.</string>]
+    <string name="favorites_title">Favorites</string>
+    <string name="favorites_empty_list">The favorites list is empty.</string>
 
     <!--Details-->
     <string name="favorite">Favorite</string>
