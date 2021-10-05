@@ -45,14 +45,12 @@ class DetailsFragment : BottomSheetDialogFragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        user = args.detailsArgs
-        if (!this::user.isInitialized) {
-            findNavController().popBackStack()
-            return
-        }
-        viewBiding()
-        initListeners()
-        initObserver()
+        args.detailsArgs?.let {
+            user = it
+            viewBiding()
+            initListeners()
+            initObserver()
+        } ?: findNavController().popBackStack()
     }
 
     private fun viewBiding() {
@@ -62,8 +60,11 @@ class DetailsFragment : BottomSheetDialogFragment() {
             imageUser.bg()
             textFirstChar.text = user.name.first().toString()
             imageUser.set(user.img) { textFirstChar.text = "" }
-            if (user.favorite) buttonFavorite
-                .favorite(R.drawable.ic_baseline_favorite_selected, R.color.color_favorite_selected)
+            if (user.favorite)
+                buttonFavorite.favorite(
+                    R.drawable.ic_baseline_favorite_selected,
+                    R.color.color_favorite_selected
+                )
         }
     }
 
@@ -78,18 +79,15 @@ class DetailsFragment : BottomSheetDialogFragment() {
 
             buttonFavorite.setOnClickListener {
                 user.favorite = when (user.favorite) {
-                    true -> buttonFavorite
-                        .favorite(
-                            R.drawable.ic_baseline_favorite_unselected,
-                            R.color.color_icon_modal
-                        )
-                        .let { false }
-                    else -> buttonFavorite
-                        .favorite(
-                            R.drawable.ic_baseline_favorite_selected,
-                            R.color.color_favorite_selected
-                        )
-                        .let { true }
+                    true -> buttonFavorite.favorite(
+                        R.drawable.ic_baseline_favorite_unselected,
+                        R.color.color_icon_modal
+                    ).let { false }
+
+                    else -> buttonFavorite.favorite(
+                        R.drawable.ic_baseline_favorite_selected,
+                        R.color.color_favorite_selected
+                    ).let { true }
                 }
                 viewModel.setFavorite(user)
             }

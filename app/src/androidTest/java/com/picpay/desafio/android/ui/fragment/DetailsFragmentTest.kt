@@ -4,7 +4,8 @@ package com.picpay.desafio.android.ui.fragment
 import androidx.paging.ExperimentalPagingApi
 import androidx.test.filters.MediumTest
 import androidx.test.platform.app.InstrumentationRegistry
-import com.picpay.desafio.android.extensions.launchFragmentInHiltContainer
+import com.picpay.desafio.android.data.model.User
+import com.picpay.desafio.android.launchFragmentInHiltContainer
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
@@ -17,9 +18,15 @@ import javax.inject.Inject
 @MediumTest
 class DetailsFragmentTest {
 
-    private
-    val context =
+    private val context =
         InstrumentationRegistry.getInstrumentation().targetContext
+
+    private val user = User(
+        "1",
+        "Sandrine Spinka",
+        "https://randomuser.me/api/portraits/men/1.jpg",
+        "Tod86"
+    )
 
     @get:Rule
     var hiltRule = HiltAndroidRule(this)

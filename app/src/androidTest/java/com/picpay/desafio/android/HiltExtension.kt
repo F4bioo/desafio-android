@@ -1,4 +1,4 @@
-package com.picpay.desafio.android.extensions
+package com.picpay.desafio.android
 
 import android.content.ComponentName
 import android.content.Intent
@@ -9,8 +9,6 @@ import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentFactory
 import androidx.test.core.app.ActivityScenario
 import androidx.test.core.app.ApplicationProvider
-import com.picpay.desafio.android.HiltTestActivity
-import com.picpay.desafio.android.R
 
 /**
  * launchFragmentInContainer from the androidx.fragment:fragment-testing library

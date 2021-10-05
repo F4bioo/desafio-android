@@ -1,26 +1,36 @@
 package com.picpay.desafio.android.utils
 
-import android.content.Context
-import android.content.SharedPreferences
+import androidx.arch.core.executor.testing.InstantTaskExecutorRule
 import androidx.test.ext.junit.runners.AndroidJUnit4
-import androidx.test.platform.app.InstrumentationRegistry
+import androidx.test.filters.SmallTest
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase
 import org.junit.Before
+import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import javax.inject.Inject
+import javax.inject.Named
 
 @RunWith(AndroidJUnit4::class)
+@SmallTest
+@HiltAndroidTest
 class PrefsTest : TestCase() {
 
-    private lateinit var sharedPreferences: SharedPreferences
-    private lateinit var prefs: Prefs
+    @get:Rule
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
+
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
+
+    @Inject
+    @Named("provideTestPrefs")
+    lateinit var prefs: Prefs
 
     @Before
     fun setup() {
-        val context = InstrumentationRegistry.getInstrumentation().targetContext
-        sharedPreferences =
-            context.getSharedPreferences(Constants.PREFERENCES, Context.MODE_PRIVATE)
-        prefs = Prefs(sharedPreferences)
+        hiltRule.inject()
     }
 
     @Test

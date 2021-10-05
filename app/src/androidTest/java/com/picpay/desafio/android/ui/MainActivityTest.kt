@@ -14,10 +14,10 @@ import androidx.test.filters.MediumTest
 import androidx.test.platform.app.InstrumentationRegistry
 import androidx.test.rule.ActivityTestRule
 import com.picpay.desafio.android.R
+import com.picpay.desafio.android.atPosition
 import com.picpay.desafio.android.data.model.User
-import com.picpay.desafio.android.extensions.atPosition
-import com.picpay.desafio.android.extensions.recyclerChildAction
-import com.picpay.desafio.android.extensions.waitFor
+import com.picpay.desafio.android.recyclerChildAction
+import com.picpay.desafio.android.waitFor
 import junit.framework.TestCase
 import org.junit.Rule
 import org.junit.Test

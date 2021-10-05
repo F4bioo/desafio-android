@@ -12,12 +12,8 @@ import androidx.test.espresso.contrib.RecyclerViewActions.actionOnItemAtPosition
 import androidx.test.espresso.matcher.ViewMatchers.*
 import androidx.test.filters.MediumTest
 import androidx.test.platform.app.InstrumentationRegistry
-import com.picpay.desafio.android.R
+import com.picpay.desafio.android.*
 import com.picpay.desafio.android.data.model.User
-import com.picpay.desafio.android.extensions.atPosition
-import com.picpay.desafio.android.extensions.launchFragmentInHiltContainer
-import com.picpay.desafio.android.extensions.recyclerChildAction
-import com.picpay.desafio.android.extensions.waitFor
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
@@ -116,10 +112,7 @@ class MainFragmentTest {
         onView(withId(R.id.fab)).perform(click())
 
         Mockito.verify(navController).navigate(
-            R.id.action_mainFragment_to_favoritesFragment
+            MainFragmentDirections.actionMainFragmentToFavoritesFragment()
         )
-
-        onView(withText(context.getString(R.string.favorites_title))).perform()
-            .check(matches(isDisplayed()))
     }
 }

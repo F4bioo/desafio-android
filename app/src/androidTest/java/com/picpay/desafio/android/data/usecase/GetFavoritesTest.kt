@@ -1,8 +1,6 @@
 package com.picpay.desafio.android.data.usecase
 
 import androidx.arch.core.executor.testing.InstantTaskExecutorRule
-import androidx.room.Room
-import androidx.test.core.app.ApplicationProvider
 import androidx.test.ext.junit.runners.AndroidJUnit4
 import androidx.test.filters.SmallTest
 import com.google.common.truth.Truth.assertThat
@@ -12,6 +10,8 @@ import com.picpay.desafio.android.data.repository.LocalRepository
 import com.picpay.desafio.android.data.room.FavoriteDao
 import com.picpay.desafio.android.data.room.PicPayDatabase
 import com.picpay.desafio.android.utils.extensions.fromUserToFavoriteEntity
+import dagger.hilt.android.testing.HiltAndroidRule
+import dagger.hilt.android.testing.HiltAndroidTest
 import junit.framework.TestCase
 import kotlinx.coroutines.runBlocking
 import org.junit.After
@@ -19,15 +19,24 @@ import org.junit.Before
 import org.junit.Rule
 import org.junit.Test
 import org.junit.runner.RunWith
+import javax.inject.Inject
+import javax.inject.Named
 
 @RunWith(AndroidJUnit4::class)
 @SmallTest
+@HiltAndroidTest
 class GetFavoritesTest : TestCase() {
 
     @get:Rule
-    val rule = InstantTaskExecutorRule()
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
-    private lateinit var db: PicPayDatabase
+    @get:Rule
+    var hiltRule = HiltAndroidRule(this)
+
+    @Inject
+    @Named("provideTestPicPayDatabase")
+    lateinit var db: PicPayDatabase
+
     private lateinit var dao: FavoriteDao
 
     private lateinit var getFavorites: GetFavorites
@@ -40,10 +49,8 @@ class GetFavoritesTest : TestCase() {
 
     @Before
     fun setup() {
-        db = Room.inMemoryDatabaseBuilder(
-            ApplicationProvider.getApplicationContext(),
-            PicPayDatabase::class.java
-        ).allowMainThreadQueries().build()
+        hiltRule.inject()
+
         dao = db.favoriteDao()
 
         val repository = LocalRepository(dao)

@@ -148,7 +148,8 @@ class MainFragment constructor(
         }
 
         binding.fab.setOnClickListener {
-            findNavController().navigate(R.id.action_mainFragment_to_favoritesFragment)
+            findNavController()
+                .safelyNavigate(MainFragmentDirections.actionMainFragmentToFavoritesFragment())
         }
 
         binding.includeList.refresh.setOnRefreshListener {

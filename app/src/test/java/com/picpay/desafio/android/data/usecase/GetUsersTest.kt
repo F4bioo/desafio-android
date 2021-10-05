@@ -21,7 +21,7 @@ import retrofit2.Response
 class GetUsersTest {
 
     @get:Rule
-    val rule = InstantTaskExecutorRule()
+    val instantTaskExecutorRule = InstantTaskExecutorRule()
 
     private lateinit var repository: RemoteRepository
     private lateinit var getUsers: GetUsers
