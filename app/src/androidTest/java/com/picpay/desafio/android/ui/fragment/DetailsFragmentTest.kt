@@ -11,6 +11,7 @@ import dagger.hilt.android.testing.HiltAndroidTest
 import org.junit.Before
 import org.junit.Rule
 import javax.inject.Inject
+import javax.inject.Named
 
 
 @ExperimentalPagingApi
@@ -21,18 +22,15 @@ class DetailsFragmentTest {
     private val context =
         InstrumentationRegistry.getInstrumentation().targetContext
 
-    private val user = User(
-        "1",
-        "Sandrine Spinka",
-        "https://randomuser.me/api/portraits/men/1.jpg",
-        "Tod86"
-    )
-
     @get:Rule
     var hiltRule = HiltAndroidRule(this)
 
     @Inject
     lateinit var fragmentFactory: AppFragmentFactory
+
+    @Inject
+    @Named("provideTestUser")
+    lateinit var user: User
 
     private lateinit var fragment: DetailsFragment
 

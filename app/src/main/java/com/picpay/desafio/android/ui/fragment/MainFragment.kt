@@ -27,7 +27,7 @@ import dagger.hilt.android.AndroidEntryPoint
 @ExperimentalPagingApi
 @AndroidEntryPoint
 class MainFragment constructor(
-    private val adapter: RemoteUserAdapter
+    val adapter: RemoteUserAdapter
 ) : Fragment(R.layout.fragment_main) {
 
     private var _binding: FragmentMainBinding? = null

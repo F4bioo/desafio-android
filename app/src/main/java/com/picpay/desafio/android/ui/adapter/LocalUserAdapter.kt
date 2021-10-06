@@ -69,7 +69,7 @@ class LocalUserAdapter
     }
 
     override fun submitList(list: MutableList<User>?) {
-        super.submitList(list?.distinct())
+        super.submitList(list)
         list?.let {
             users.addAll(it)
         }

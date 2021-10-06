@@ -1,4 +1,4 @@
-package com.picpay.desafio.android.data.usecase.di
+package com.picpay.desafio.android.di
 
 import android.content.Context
 import android.content.SharedPreferences

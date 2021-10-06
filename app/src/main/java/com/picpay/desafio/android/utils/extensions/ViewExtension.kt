@@ -21,7 +21,6 @@ fun ImageView.set(imageUrl: String, onCallBack: () -> Unit) {
     val img = if (imageUrl.isNotEmpty()) imageUrl else "."
     Picasso.get()
         .load(img)
-        .error(R.drawable.ic_baseline_person)
         .into(this, object : Callback {
             override fun onSuccess() {
                 onCallBack.invoke()

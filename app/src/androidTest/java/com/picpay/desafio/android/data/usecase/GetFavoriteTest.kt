@@ -38,14 +38,12 @@ class GetFavoriteTest : TestCase() {
     @Named("provideTestPicPayDatabase")
     lateinit var db: PicPayDatabase
 
+    @Inject
+    @Named("provideTestUser")
+    lateinit var user: User
+
     private lateinit var dao: FavoriteDao
     private lateinit var getFavorite: GetFavorite
-    private val user = User(
-        "1",
-        "Sandrine Spinka",
-        "https://randomuser.me/api/portraits/men/1.jpg",
-        "Tod86"
-    )
 
     @Before
     fun setup() {

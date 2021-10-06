@@ -24,7 +24,7 @@ import javax.inject.Inject
 @AndroidEntryPoint
 class FavoritesFragment
 @Inject constructor(
-    private var adapter: LocalUserAdapter
+    var adapter: LocalUserAdapter
 ) : Fragment(R.layout.fragment_favorites) {
 
     private var _binding: FragmentFavoritesBinding? = null
