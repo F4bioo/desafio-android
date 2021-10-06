@@ -42,24 +42,24 @@ constructor(
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         val user = getItem(position)
-        holder.viewBiding(user)
+        user?.let { holder.viewBiding(it) }
     }
 
     inner class ViewHolder(
         private val biding: AdapterItemBinding
     ) : RecyclerView.ViewHolder(biding.root) {
 
-        fun viewBiding(user: User?) {
+        fun viewBiding(user: User) {
             biding.apply {
-                textUsername.username(user?.username)
-                textName.name(user?.name)
+                textUsername.username(user.username)
+                textName.name(user.name)
                 imageUser.bg()
-                textFirstChar.text = user?.name?.first()?.toString() ?: "X"
-                imageUser.set(user?.img) { textFirstChar.text = "" }
-                checkFavorite.isFavorite(user?.id)
+                textFirstChar.charAt(user.name)
+                imageUser.set(user.img) { textFirstChar.text = "" }
+                checkFavorite.isFavorite(user.id)
 
                 checkFavorite.setOnClickListener {
-                    if (user == null) checkFavorite.isChecked = false
+                    if (user.name.isEmpty()) checkFavorite.isChecked = false
                     biding.clicked(it, user, layoutPosition)
                 }
             }
@@ -72,23 +72,23 @@ constructor(
         }
     }
 
-    private fun CheckBox.isFavorite(id: String?) {
-        id?.let { _id ->
-            job = CoroutineScope(Dispatchers.IO).launch {
-                val dataState = getFavorite.invoke(GetFavorite.Params(_id))
-                withContext(Dispatchers.Main) {
-                    isChecked = dataState is DataState.OnSuccess
-                            && dataState.data != null
-                }
+    private fun CheckBox.isFavorite(id: String) {
+        if (id.isEmpty()) return
+
+        job = CoroutineScope(Dispatchers.IO).launch {
+            val dataState = getFavorite.invoke(GetFavorite.Params(id))
+            withContext(Dispatchers.Main) {
+                isChecked = dataState is DataState.OnSuccess
+                        && dataState.data != null
             }
         }
     }
 
-    private fun AdapterItemBinding.clicked(view: View, user: User?, position: Int) {
-        user?.let { _user ->
-            _user.favorite = checkFavorite.isChecked
-            onClickListener?.invoke(view, _user, position)
-        } ?: view.context.errorToast()
+    private fun AdapterItemBinding.clicked(view: View, user: User, position: Int) {
+        if (user.name.isNotEmpty()) {
+            user.favorite = checkFavorite.isChecked
+            onClickListener?.invoke(view, user, position)
+        } else view.context.errorToast()
     }
 
     fun jobCancel() {

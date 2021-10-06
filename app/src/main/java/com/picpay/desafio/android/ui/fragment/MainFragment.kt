@@ -160,10 +160,12 @@ class MainFragment constructor(
 
             progressEmpty.isVisible = isLoading
 
-            (isError || adapter.itemCount == 0).apply {
-                emptyLayout.isVisible = this
-                buttonRetry.isVisible = this
-                        && !progressEmpty.isVisible
+            emptyLayout.isVisible = ((isLoading || isError) && adapter.itemCount == 0)
+            buttonRetry.isVisible = isLoading.apply {
+                progressEmpty.isVisible = !this
+            }
+            buttonRetry.isVisible = isError.apply {
+                progressEmpty.isVisible = !this
             }
 
             textEmpty.text = when {

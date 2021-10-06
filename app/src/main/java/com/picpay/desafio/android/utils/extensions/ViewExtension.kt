@@ -17,11 +17,11 @@ import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import java.util.*
 
-fun ImageView.set(imageUrl: String?, onCallBack: () -> Unit) {
+fun ImageView.set(imageUrl: String, onCallBack: () -> Unit) {
+    val img = if (imageUrl.isNotEmpty()) imageUrl else "."
     Picasso.get()
-        .load(imageUrl)
-        .noPlaceholder()
-        .noFade()
+        .load(img)
+        .error(R.drawable.ic_baseline_person)
         .into(this, object : Callback {
             override fun onSuccess() {
                 onCallBack.invoke()
@@ -65,13 +65,22 @@ fun Context.errorToast() {
     Toast.makeText(this, R.string.generic_error, Toast.LENGTH_SHORT).show()
 }
 
-fun TextView.username(username: String?) {
-    text = if (username == null) context.getString(R.string.error_loading)
-    else context.getString(R.string.username, username)
+fun TextView.charAt(name: String) {
+    text = if (name.isNotEmpty()) {
+        name.first().toString()
+    } else ""
 }
 
-fun TextView.name(name: String?) {
-    text = name ?: context.getString(R.string.check_connection)
+fun TextView.username(username: String) {
+    text = if (username.isEmpty()) {
+        context.getString(R.string.error_loading)
+    } else context.getString(R.string.username, username)
+}
+
+fun TextView.name(name: String) {
+    text = if (name.isEmpty()) {
+        context.getString(R.string.check_connection)
+    } else name
 }
 
 fun FragmentActivity.setOnBackPressedDispatcher(handleOnBackPressed: () -> Unit) {

@@ -46,17 +46,16 @@ class LocalUserAdapter
         private val biding: AdapterItemBinding
     ) : RecyclerView.ViewHolder(biding.root) {
 
-        fun viewBiding(user: User?) {
+        fun viewBiding(user: User) {
             biding.apply {
-                textUsername.username(user?.username)
-                textName.name(user?.name)
+                textUsername.username(user.username)
+                textName.name(user.name)
                 imageUser.bg()
-                textFirstChar.text = user?.name?.first()?.toString() ?: "X"
-                imageUser.set(user?.img) { textFirstChar.text = "" }
-                checkFavorite.isChecked = user?.favorite ?: false
+                textFirstChar.charAt(user.name)
+                imageUser.set(user.img) { textFirstChar.text = "" }
+                checkFavorite.isChecked = user.favorite
 
                 checkFavorite.setOnClickListener {
-                    if (user == null) checkFavorite.isChecked = false
                     biding.clicked(it, user, layoutPosition)
                 }
             }
@@ -85,11 +84,9 @@ class LocalUserAdapter
         notifyItemChanged(position)
     }
 
-    private fun AdapterItemBinding.clicked(view: View, user: User?, position: Int) {
-        user?.let { _user ->
-            _user.favorite = checkFavorite.isChecked
-            onClickListener?.invoke(view, _user, position)
-        } ?: view.context.errorToast()
+    private fun AdapterItemBinding.clicked(view: View, user: User, position: Int) {
+        user.favorite = checkFavorite.isChecked
+        onClickListener?.invoke(view, user, position)
     }
 
     fun setOnItemClickListener(ItemClicked: ItemClicked) {

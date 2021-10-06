@@ -4,11 +4,11 @@ import com.google.gson.annotations.SerializedName
 
 data class UserDomain(
     @SerializedName("id")
-    val id: String,
+    val id: String?,
     @SerializedName("name")
-    val name: String,
+    val name: String?,
     @SerializedName("img")
-    val img: String,
+    val img: String?,
     @SerializedName("username")
-    val username: String
+    val username: String?
 )
