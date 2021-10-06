@@ -35,5 +35,7 @@
     <string name="username">\@%s</string>
     <string name="main_empty_list">The list is empty.</string>
     <string name="loading_list">Loading list…</string>
+    <string name="error_loading">Error loading</string>
+    <string name="check_connection">Check your connection.</string>
 
 </resources>

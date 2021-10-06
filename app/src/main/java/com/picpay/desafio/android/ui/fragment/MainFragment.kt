@@ -3,12 +3,8 @@ package com.picpay.desafio.android.ui.fragment
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
-import androidx.fragment.app.Fragment
-import androidx.fragment.app.activityViewModels
-import androidx.fragment.app.setFragmentResultListener
-import androidx.fragment.app.viewModels
+import androidx.fragment.app.*
 import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
 import androidx.paging.ExperimentalPagingApi
@@ -24,6 +20,7 @@ import com.picpay.desafio.android.ui.viewmodel.MainViewModel
 import com.picpay.desafio.android.utils.Constants
 import com.picpay.desafio.android.utils.SharedViewModel
 import com.picpay.desafio.android.utils.extensions.safelyNavigate
+import com.picpay.desafio.android.utils.extensions.setOnBackPressedDispatcher
 import dagger.hilt.android.AndroidEntryPoint
 
 
@@ -37,7 +34,7 @@ class MainFragment constructor(
     private val binding get() = _binding!!
     private val viewModel by viewModels<MainViewModel>()
     private val sharedViewModel by activityViewModels<SharedViewModel>()
-    private var inOnTop = true
+    private var isOnTop = true
     private var pos = -1
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -47,7 +44,8 @@ class MainFragment constructor(
         initObserver()
         initRecyclerView()
         initListeners()
-        initOnBackDispatcher()
+        requireActivity()
+            .initOnBackDispatcher()
     }
 
     override fun onDestroyView() {
@@ -97,15 +95,12 @@ class MainFragment constructor(
     private fun initListeners() {
         adapter.setOnItemClickListener { view, user, position ->
             pos = position
+
             when (view.id) {
-                R.id.check_favorite -> {
-                    viewModel.setFavorite(user)
-                }
-                else -> {
-                    val directions =
-                        MainFragmentDirections.actionMainFragmentToDetailsFragment(user)
-                    findNavController().safelyNavigate(directions)
-                }
+                R.id.check_favorite -> viewModel.setFavorite(user)
+                else -> findNavController().safelyNavigate(
+                    MainFragmentDirections.actionMainFragmentToDetailsFragment(user)
+                )
             }
         }
 
@@ -119,7 +114,7 @@ class MainFragment constructor(
 
             override fun onScrollStateChanged(recyclerView: RecyclerView, newState: Int) {
                 super.onScrollStateChanged(recyclerView, newState)
-                inOnTop = !recyclerView.canScrollVertically(-1)
+                isOnTop = !recyclerView.canScrollVertically(-1)
                         && newState == RecyclerView.SCROLL_STATE_IDLE
 
                 binding.fab.isVisible = !(!recyclerView.canScrollVertically(1)
@@ -144,12 +139,13 @@ class MainFragment constructor(
         }
 
         binding.includeEmpty.buttonRetry.setOnClickListener {
-            adapter.retry()
+            viewModel.getUsersFromMediator()
         }
 
         binding.fab.setOnClickListener {
-            findNavController()
-                .safelyNavigate(MainFragmentDirections.actionMainFragmentToFavoritesFragment())
+            findNavController().safelyNavigate(
+                MainFragmentDirections.actionMainFragmentToFavoritesFragment()
+            )
         }
 
         binding.includeList.refresh.setOnRefreshListener {
@@ -162,12 +158,12 @@ class MainFragment constructor(
             val isLoading = refresh is LoadState.Loading
             val isError = refresh is LoadState.Error
 
-            emptyLayout.isVisible = ((isLoading || isError) && adapter.itemCount == 0)
-            buttonRetry.isVisible = isLoading.apply {
-                progressEmpty.isVisible = !this
-            }
-            buttonRetry.isVisible = isError.apply {
-                progressEmpty.isVisible = !this
+            progressEmpty.isVisible = isLoading
+
+            (isError || adapter.itemCount == 0).apply {
+                emptyLayout.isVisible = this
+                buttonRetry.isVisible = this
+                        && !progressEmpty.isVisible
             }
 
             textEmpty.text = when {
@@ -177,15 +173,11 @@ class MainFragment constructor(
         }
     }
 
-    private fun initOnBackDispatcher() {
-        requireActivity().apply {
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    if (inOnTop) finish()
-                    else binding.includeList.recycler
-                        .smoothScrollToPosition(0)
-                }
-            }.let { onBackPressedDispatcher.addCallback(it) }
+    private fun FragmentActivity.initOnBackDispatcher() {
+        setOnBackPressedDispatcher {
+            if (isOnTop) finish()
+            else binding.includeList.recycler
+                .smoothScrollToPosition(0)
         }
     }
 }

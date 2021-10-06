@@ -3,9 +3,9 @@ package com.picpay.desafio.android.ui.fragment
 import android.os.Bundle
 import android.view.View
 import android.widget.Toast
-import androidx.activity.OnBackPressedCallback
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.setFragmentResultListener
 import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
@@ -17,6 +17,7 @@ import com.picpay.desafio.android.ui.adapter.LocalUserAdapter
 import com.picpay.desafio.android.ui.viewmodel.FavoritesViewModel
 import com.picpay.desafio.android.utils.Constants
 import com.picpay.desafio.android.utils.extensions.safelyNavigate
+import com.picpay.desafio.android.utils.extensions.setOnBackPressedDispatcher
 import dagger.hilt.android.AndroidEntryPoint
 import javax.inject.Inject
 
@@ -38,7 +39,8 @@ class FavoritesFragment
         initListeners()
         initObserver()
         initRecyclerView()
-        initOnBackDispatcher()
+        requireActivity()
+            .initOnBackDispatcher()
     }
 
     private fun viewBiding() {
@@ -57,14 +59,10 @@ class FavoritesFragment
     private fun initListeners() {
         adapter.setOnItemClickListener { view, user, _ ->
             when (view.id) {
-                R.id.check_favorite -> {
-                    viewModel.setFavorite(user)
-                }
-                else -> {
-                    val directions =
-                        FavoritesFragmentDirections.actionFavoritesFragmentToDetailsFragment(user)
-                    findNavController().safelyNavigate(directions)
-                }
+                R.id.check_favorite -> viewModel.setFavorite(user)
+                else -> findNavController().safelyNavigate(
+                    FavoritesFragmentDirections.actionFavoritesFragmentToDetailsFragment(user)
+                )
             }
         }
 
@@ -120,13 +118,9 @@ class FavoritesFragment
         viewModel.getFavorites()
     }
 
-    private fun initOnBackDispatcher() {
-        requireActivity().apply {
-            object : OnBackPressedCallback(true) {
-                override fun handleOnBackPressed() {
-                    findNavController().popBackStack()
-                }
-            }.let { onBackPressedDispatcher.addCallback(it) }
+    private fun FragmentActivity.initOnBackDispatcher() {
+        setOnBackPressedDispatcher {
+            findNavController().popBackStack()
         }
     }
 }

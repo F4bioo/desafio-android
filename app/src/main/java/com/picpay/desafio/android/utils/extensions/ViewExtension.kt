@@ -6,15 +6,18 @@ import android.os.Build
 import android.view.Window
 import android.widget.ImageView
 import android.widget.TextView
+import android.widget.Toast
+import androidx.activity.OnBackPressedCallback
 import androidx.annotation.ColorRes
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.ContextCompat
+import androidx.fragment.app.FragmentActivity
 import com.picpay.desafio.android.R
 import com.squareup.picasso.Callback
 import com.squareup.picasso.Picasso
 import java.util.*
 
-fun ImageView.set(imageUrl: String, onCallBack: () -> Unit) {
+fun ImageView.set(imageUrl: String?, onCallBack: () -> Unit) {
     Picasso.get()
         .load(imageUrl)
         .noPlaceholder()
@@ -58,6 +61,23 @@ fun Context.color(@ColorRes color: Int): Int {
     return ContextCompat.getColor(this, color)
 }
 
-fun TextView.username(username: String) {
-    text = context.getString(R.string.username, username)
+fun Context.errorToast() {
+    Toast.makeText(this, R.string.generic_error, Toast.LENGTH_SHORT).show()
+}
+
+fun TextView.username(username: String?) {
+    text = if (username == null) context.getString(R.string.error_loading)
+    else context.getString(R.string.username, username)
+}
+
+fun TextView.name(name: String?) {
+    text = name ?: context.getString(R.string.check_connection)
+}
+
+fun FragmentActivity.setOnBackPressedDispatcher(handleOnBackPressed: () -> Unit) {
+    object : OnBackPressedCallback(true) {
+        override fun handleOnBackPressed() {
+            handleOnBackPressed.invoke()
+        }
+    }.let { onBackPressedDispatcher.addCallback(it) }
 }
