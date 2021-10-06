@@ -15,7 +15,6 @@ import com.picpay.desafio.android.R
 import com.picpay.desafio.android.data.api.DataState
 import com.picpay.desafio.android.databinding.FragmentMainBinding
 import com.picpay.desafio.android.ui.adapter.RemoteUserAdapter
-import com.picpay.desafio.android.ui.adapter.paging.UserLoadState
 import com.picpay.desafio.android.ui.viewmodel.MainViewModel
 import com.picpay.desafio.android.utils.Constants
 import com.picpay.desafio.android.utils.SharedViewModel
@@ -86,10 +85,7 @@ class MainFragment constructor(
 
     private fun initRecyclerView() {
         binding.includeList.recycler.layoutManager = LinearLayoutManager(requireContext())
-        binding.includeList.recycler.adapter = adapter.withLoadStateHeaderAndFooter(
-            header = UserLoadState { adapter.retry() },
-            footer = UserLoadState { adapter.retry() }
-        )
+        binding.includeList.recycler.adapter = adapter
     }
 
     private fun initListeners() {
@@ -135,7 +131,7 @@ class MainFragment constructor(
         }
 
         adapter.addLoadStateListener { loadStates ->
-            loadStates.showEmptyList()
+            loadStates.emptyListRule()
         }
 
         binding.includeEmpty.buttonRetry.setOnClickListener {
@@ -153,20 +149,16 @@ class MainFragment constructor(
         }
     }
 
-    private fun CombinedLoadStates.showEmptyList() {
+    private fun CombinedLoadStates.emptyListRule() {
         binding.includeEmpty.apply {
             val isLoading = refresh is LoadState.Loading
             val isError = refresh is LoadState.Error
 
             progressEmpty.isVisible = isLoading
-
-            emptyLayout.isVisible = ((isLoading || isError) && adapter.itemCount == 0)
-            buttonRetry.isVisible = isLoading.apply {
-                progressEmpty.isVisible = !this
-            }
-            buttonRetry.isVisible = isError.apply {
-                progressEmpty.isVisible = !this
-            }
+            emptyLayout.isVisible = (isLoading || isError)
+                    && adapter.itemCount == 0
+            buttonRetry.isVisible = isLoading
+            buttonRetry.isVisible = isError
 
             textEmpty.text = when {
                 isLoading -> getString(R.string.loading_list)

@@ -7,6 +7,7 @@ import androidx.paging.RemoteMediator
 import androidx.room.withTransaction
 import com.picpay.desafio.android.data.api.DataState
 import com.picpay.desafio.android.data.model.RemoteKeyEntity
+import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.data.model.UserEntity
 import com.picpay.desafio.android.data.room.PicPayDatabase
 import com.picpay.desafio.android.data.usecase.GetUsers
@@ -35,8 +36,13 @@ class UserRemoteMediator(
         }
 
         try {
-            val response = getUsers.invoke()
-            val users = if (response is DataState.OnSuccess) response.data else arrayListOf()
+            val users = arrayListOf<User>()
+
+            when (val response = getUsers.invoke()) {
+                is DataState.OnSuccess -> users.addAll(response.data)
+                else -> return MediatorResult.Error(Exception("Error to loading"))
+            }
+
             val isEndOfList = users.isEmpty()
 
             db.withTransaction {
