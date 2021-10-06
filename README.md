@@ -18,3 +18,73 @@ Com o passar do tempo identificamos alguns problemas que impedem esse aplicativo
   - Por outro lado, testes unitários rodam em um ambiente de execução diferenciado e são menos fiéis ao dia-a-dia de nossos usuários, então testes instrumentados também são importantes.
 
 Boa sorte! =)
+
+## This is an example project using
+- Retrofit
+- Room Database
+- Hilt Dependency Injection
+- MVVM Architecture
+- FileProvider
+- Paging 3, LoadStateAdapter
+- ListAdapter
+- Navigation, single Activity architecture
+- SafeArgs
+- Api rest
+
+Response list
+```sh
+[
+    {
+        "id": "1",
+        "name": "Sandrine Spinka",
+        "img": "https://randomuser.me/api/portraits/men/1.jpg",
+        "username": "Tod86"
+    },
+    ...
+]
+```
+
+## Acknowledgements
+* [Hilt dependency injection](https://developer.android.com/training/dependency-injection/hilt-android)
+
+* [Navigation](https://developer.android.com/guide/navigation)
+
+* [Safeargs](https://developer.android.com/guide/navigation/navigation-pass-data)
+
+* [Kotlin Coroutines](https://developer.android.com/kotlin/coroutines)
+
+* [MVVM Architecture](https://developer.android.com/jetpack/guide)
+
+* [LiveData](https://developer.android.com/topic/libraries/architecture/livedata)
+
+* [Paging 3](https://developer.android.com/topic/libraries/architecture/paging/v3-overview)
+
+* [ListAdapter](https://developer.android.com/topic/libraries/architecture/paging/v3-overview)
+
+* [DiffUtil](https://developer.android.com/reference/androidx/recyclerview/widget/DiffUtil)
+
+* [ViewBinding](https://developer.android.com/topic/libraries/view-binding)
+
+* [Lifecycle](https://developer.android.com/guide/components/activities/activity-lifecycle)
+
+* [Room](https://developer.android.com/training/data-storage/room)
+
+* [Shared Preferences](https://developer.android.com/training/data-storage/shared-preferences)
+
+* [Retrofit](https://square.github.io/retrofit/)
+
+* [Espresso](https://developer.android.com/training/testing/espresso)
+  
+* [FragmentFactory](https://proandroiddev.com/android-fragments-fragmentfactory-ceec3cf7c959)
+
+## Screens
+<kbd>
+<img src="images/main_screen.gif" width="30%"></img>
+<img src="images/screen_capture0.png" width="30%"></img>
+<img src="images/screen_capture1.png" width="30%"></img>
+<img src="images/screen_capture2.png" width="30%"></img>
+<img src="images/screen_capture3.png" width="30%"></img>
+<img src="images/screen_capture4.png" width="30%"></img>
+<img src="images/screen_capture5.png" width="30%"></img>
+<img src="images/screen_capture6.png" width="30%"></img>
+</kbd>
