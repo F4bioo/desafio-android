@@ -24,12 +24,12 @@ Boa sorte! =)
 - Room Database
 - Hilt Dependency Injection
 - MVVM Architecture
-- FileProvider
 - Paging 3, LoadStateAdapter
 - ListAdapter
 - Navigation, single Activity architecture
 - SafeArgs
 - Api rest
+- Jetpack components
 
 Response list
 ```sh
