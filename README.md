@@ -88,5 +88,4 @@ Response list
 <img src="images/screen_capture3.png" width="30%"></img>
 <img src="images/screen_capture4.png" width="30%"></img>
 <img src="images/screen_capture5.png" width="30%"></img>
-<img src="images/screen_capture6.png" width="30%"></img>
 </kbd>
