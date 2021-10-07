@@ -50,9 +50,9 @@ class MainFragmentTest {
     fun setup() {
         hiltRule.inject()
 
-        launchFragmentInHiltContainer<MainFragment>(factory = fragmentFactory) {
-            fragment = this
-        }
+        launchFragmentInHiltContainer<MainFragment>(
+            factory = fragmentFactory
+        ) { fragment = this }
     }
 
     @Test
@@ -117,12 +117,23 @@ class MainFragmentTest {
     }
 
     @Test
+    fun shouldPassWhenHasCharAtOnCircleImage(): Unit = runBlocking {
+        onView(withId(R.id.include_empty)).perform(setViewGroupVisibility(false))
+        onView(withId(R.id.include_list)).perform(setViewGroupVisibility(true))
+
+        fragment.apply {
+            val users = PagingData.from(arrayListOf(user))
+            adapter.submitData(users)
+        }
+
+        onView(withText("K")).check(matches(isDisplayed()))
+    }
+
+    @Test
     fun shouldPassWhenClickOnFabButton() {
         val navController = Mockito.mock(NavController::class.java)
 
-        fragment.apply {
-            Navigation.setViewNavController(requireView(), navController)
-        }
+        fragment.apply { Navigation.setViewNavController(requireView(), navController) }
 
         onView(withId(R.id.fab)).perform(click())
 

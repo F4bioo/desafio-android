@@ -114,4 +114,5 @@ dependencies {
     androidTestImplementation "org.mockito:mockito-android:$android_mokito_version"
     kaptAndroidTest "com.google.dagger:hilt-android-compiler:$hilt_version"
     debugImplementation "androidx.fragment:fragment-testing:$fragment_test_version"
+    androidTestImplementation "com.android.support.test.uiautomator:uiautomator-v18:$uiautomator_version"
 }

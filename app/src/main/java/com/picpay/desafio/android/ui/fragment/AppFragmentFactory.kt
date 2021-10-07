@@ -11,7 +11,7 @@ import javax.inject.Inject
 class AppFragmentFactory
 @Inject
 constructor(
-    private var remoteUserAdapter: RemoteUserAdapter,
+    private val remoteUserAdapter: RemoteUserAdapter,
     private val localUserAdapter: LocalUserAdapter
 ) : FragmentFactory() {
 
@@ -19,6 +19,7 @@ constructor(
         return when (className) {
             MainFragment::class.java.name -> MainFragment(remoteUserAdapter)
             FavoritesFragment::class.java.name -> FavoritesFragment(localUserAdapter)
+            DetailsFragment::class.java.name -> DetailsFragment()
             else -> return super.instantiate(classLoader, className)
         }
     }

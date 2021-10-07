@@ -54,9 +54,9 @@ class FavoritesFragmentTest {
     fun setup() {
         hiltRule.inject()
 
-        launchFragmentInHiltContainer<FavoritesFragment>(factory = fragmentFactory) {
-            fragment = this
-        }
+        launchFragmentInHiltContainer<FavoritesFragment>(
+            factory = fragmentFactory
+        ) { fragment = this }
     }
 
     @Test
@@ -123,6 +123,20 @@ class FavoritesFragmentTest {
         delay(2000)
         onView(withText(user.name)).check(matches(isDisplayed()))
         onView(withText("@${user.username}")).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun shouldPassWhenHasCharAtOnCircleImage(): Unit = runBlocking {
+        onView(withId(R.id.include_empty)).perform(setViewGroupVisibility(false))
+        onView(withId(R.id.include_list)).perform(setViewGroupVisibility(true))
+
+        fragment.apply {
+            val users = arrayListOf(user)
+            adapter.submitList(users)
+        }
+
+        delay(2000)
+        onView(withText("K")).check(matches(isDisplayed()))
     }
 
     @Test
