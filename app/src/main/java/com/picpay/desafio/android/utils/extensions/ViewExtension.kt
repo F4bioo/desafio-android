@@ -18,7 +18,8 @@ import com.squareup.picasso.Picasso
 import java.util.*
 
 fun ImageView.set(imageUrl: String, onCallBack: () -> Unit) {
-    val img = if (imageUrl.trim().isNotEmpty()) imageUrl else "."
+    val img = if (imageUrl.trim().isEmpty()) "."
+    else imageUrl.trim()
     Picasso.get()
         .load(img)
         .into(this, object : Callback {
