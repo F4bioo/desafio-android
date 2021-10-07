@@ -17,6 +17,7 @@ import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.ui.adapter.RemoteUserAdapter
 import dagger.hilt.android.testing.HiltAndroidRule
 import dagger.hilt.android.testing.HiltAndroidTest
+import kotlinx.coroutines.ExperimentalCoroutinesApi
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.runBlocking
 import org.junit.Before
@@ -82,10 +83,28 @@ class MainFragmentTest {
     }
 
     @Test
-    fun shouldPassWhenFavoriteIsChecked(): Unit = runBlocking {
-        onView(withId(R.id.include_empty)).perform(setViewGroupVisibility(false))
-        onView(withId(R.id.include_list)).perform(setViewGroupVisibility(true))
+    fun shouldPassWhenHasEmptyLayout() {
+        onView(withId(R.id.include_list)).perform(setViewGroupVisibility(false))
+        onView(withId(R.id.include_empty)).perform(setViewGroupVisibility(true))
+        onView(withId(R.id.include_empty)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+    }
 
+    @Test
+    fun shouldPassWhenHasEmptyLayoutLoadingDescription() {
+        onView(withId(R.id.include_list)).perform(setViewGroupVisibility(false))
+        onView(withId(R.id.include_empty)).perform(setViewGroupVisibility(true))
+        onView(withText(context.getString(R.string.loading_list))).check(matches(isDisplayed()))
+    }
+
+    @Test
+    fun shouldPassWhenHasEmptyLayoutLoading() {
+        onView(withId(R.id.include_list)).perform(setViewGroupVisibility(false))
+        onView(withId(R.id.include_empty)).perform(setViewGroupVisibility(true))
+        onView(withId(R.id.progress_empty)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
+    }
+
+    @Test
+    fun shouldPassWhenFavoriteIsChecked(): Unit = runBlocking {
         fragment.apply {
             val users = PagingData.from(arrayListOf(user))
             adapter.submitData(users)
@@ -104,9 +123,6 @@ class MainFragmentTest {
 
     @Test
     fun shouldPassWhenRecyclerViewHasItem(): Unit = runBlocking {
-        onView(withId(R.id.include_empty)).perform(setViewGroupVisibility(false))
-        onView(withId(R.id.include_list)).perform(setViewGroupVisibility(true))
-
         fragment.apply {
             val users = PagingData.from(arrayListOf(user))
             adapter.submitData(users)
@@ -118,9 +134,6 @@ class MainFragmentTest {
 
     @Test
     fun shouldPassWhenHasCharAtOnCircleImage(): Unit = runBlocking {
-        onView(withId(R.id.include_empty)).perform(setViewGroupVisibility(false))
-        onView(withId(R.id.include_list)).perform(setViewGroupVisibility(true))
-
         fragment.apply {
             val users = PagingData.from(arrayListOf(user))
             adapter.submitData(users)
@@ -144,9 +157,6 @@ class MainFragmentTest {
 
     @Test
     fun shouldPassWhenClickOnRecyclerViewItem(): Unit = runBlocking {
-        onView(withId(R.id.include_empty)).perform(setViewGroupVisibility(false))
-        onView(withId(R.id.include_list)).perform(setViewGroupVisibility(true))
-
         val navController = Mockito.mock(NavController::class.java)
 
         fragment.apply {

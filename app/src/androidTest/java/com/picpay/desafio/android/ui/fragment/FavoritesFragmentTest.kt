@@ -67,24 +67,15 @@ class FavoritesFragmentTest {
 
     @Test
     fun shouldPassWhenHasEmptyLayout() {
-        onView(isRoot()).perform(waitFor(1000))
         onView(withId(R.id.include_list)).perform(setViewGroupVisibility(false))
-
-        onView(isRoot()).perform(waitFor(2000))
         onView(withId(R.id.include_empty)).perform(setViewGroupVisibility(true))
-
         onView(withId(R.id.include_empty)).check(matches(withEffectiveVisibility(Visibility.VISIBLE)))
     }
 
     @Test
     fun shouldPassWhenHasEmptyLayoutDescription() {
-        onView(isRoot()).perform(waitFor(1000))
         onView(withId(R.id.include_list)).perform(setViewGroupVisibility(false))
-
-        onView(isRoot()).perform(waitFor(2000))
         onView(withId(R.id.include_empty)).perform(setViewGroupVisibility(true))
-
-        onView(isRoot()).perform(waitFor(3000))
         onView(withText(context.getString(R.string.favorites_empty_list))).check(matches(isDisplayed()))
     }
 

@@ -154,10 +154,9 @@ class MainFragment constructor(
             val isLoading = refresh is LoadState.Loading
             val isError = refresh is LoadState.Error
 
-            progressEmpty.isVisible = isLoading
             emptyLayout.isVisible = (isLoading || isError)
                     && adapter.itemCount == 0
-            buttonRetry.isVisible = isLoading
+            progressEmpty.isVisible = isLoading
             buttonRetry.isVisible = isError
 
             textEmpty.text = when {
