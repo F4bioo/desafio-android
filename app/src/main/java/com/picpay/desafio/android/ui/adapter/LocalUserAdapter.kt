@@ -12,7 +12,8 @@ import com.picpay.desafio.android.utils.extensions.*
 import javax.inject.Inject
 
 class LocalUserAdapter
-@Inject constructor(
+@Inject
+constructor(
 ) : ListAdapter<User, LocalUserAdapter.ViewHolder>(LocalUserAdapter) {
 
     private val users = arrayListOf<User>()

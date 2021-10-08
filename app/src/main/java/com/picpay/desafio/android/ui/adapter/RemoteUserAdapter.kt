@@ -15,7 +15,8 @@ import com.picpay.desafio.android.utils.extensions.*
 import kotlinx.coroutines.*
 import javax.inject.Inject
 
-class RemoteUserAdapter @Inject
+class RemoteUserAdapter
+@Inject
 constructor(
     private val getFavorite: GetFavorite
 ) : PagingDataAdapter<User, RemoteUserAdapter.ViewHolder>(RemoteUserAdapter) {
