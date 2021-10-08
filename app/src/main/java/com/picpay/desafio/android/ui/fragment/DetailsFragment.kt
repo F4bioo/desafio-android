@@ -4,7 +4,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.annotation.ColorRes
 import androidx.annotation.DrawableRes
 import androidx.core.os.bundleOf
@@ -21,6 +20,7 @@ import com.picpay.desafio.android.databinding.FragmentDetailsBinding
 import com.picpay.desafio.android.ui.viewmodel.DetailsViewModel
 import com.picpay.desafio.android.utils.Constants
 import com.picpay.desafio.android.utils.extensions.bg
+import com.picpay.desafio.android.utils.extensions.errorToast
 import com.picpay.desafio.android.utils.extensions.set
 import com.picpay.desafio.android.utils.extensions.username
 import dagger.hilt.android.AndroidEntryPoint
@@ -96,13 +96,10 @@ class DetailsFragment : BottomSheetDialogFragment() {
 
     private fun initObserver() {
         viewModel.setFavoriteEvent.observe(viewLifecycleOwner) { dataState ->
-            when {
-                dataState is DataState.OnSuccess && dataState.data == null
-                        || dataState is DataState.OnException -> Toast.makeText(
-                    requireContext(), getString(R.string.generic_error), Toast.LENGTH_LONG
-                ).show()
-                else -> setFragmentResult(Constants.KEY_FAVORITE, bundleOf())
-            }
+            if (dataState is DataState.OnSuccess && dataState.data == null
+                || dataState is DataState.OnException
+            ) requireContext().errorToast()
+            else setFragmentResult(Constants.KEY_FAVORITE, bundleOf())
         }
     }
 

@@ -2,7 +2,6 @@ package com.picpay.desafio.android.ui.fragment
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.*
 import androidx.navigation.fragment.findNavController
@@ -18,6 +17,7 @@ import com.picpay.desafio.android.ui.adapter.RemoteUserAdapter
 import com.picpay.desafio.android.ui.viewmodel.MainViewModel
 import com.picpay.desafio.android.utils.Constants
 import com.picpay.desafio.android.utils.SharedViewModel
+import com.picpay.desafio.android.utils.extensions.errorToast
 import com.picpay.desafio.android.utils.extensions.safelyNavigate
 import com.picpay.desafio.android.utils.extensions.setOnBackPressedDispatcher
 import dagger.hilt.android.AndroidEntryPoint
@@ -64,12 +64,9 @@ class MainFragment constructor(
         }
 
         viewModel.setFavoriteEvent.observe(viewLifecycleOwner) { dataState ->
-            when {
-                dataState is DataState.OnSuccess && dataState.data == null
-                        || dataState is DataState.OnException -> Toast.makeText(
-                    requireContext(), getString(R.string.generic_error), Toast.LENGTH_LONG
-                ).show()
-            }
+            if (dataState is DataState.OnSuccess && dataState.data == null
+                || dataState is DataState.OnException
+            ) requireContext().errorToast()
         }
 
         viewModel.getPrefsDayNightMode { isDayMode ->

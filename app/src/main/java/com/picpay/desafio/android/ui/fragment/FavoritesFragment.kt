@@ -2,7 +2,6 @@ package com.picpay.desafio.android.ui.fragment
 
 import android.os.Bundle
 import android.view.View
-import android.widget.Toast
 import androidx.core.view.isVisible
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
@@ -16,6 +15,7 @@ import com.picpay.desafio.android.databinding.FragmentFavoritesBinding
 import com.picpay.desafio.android.ui.adapter.LocalUserAdapter
 import com.picpay.desafio.android.ui.viewmodel.FavoritesViewModel
 import com.picpay.desafio.android.utils.Constants
+import com.picpay.desafio.android.utils.extensions.errorToast
 import com.picpay.desafio.android.utils.extensions.safelyNavigate
 import com.picpay.desafio.android.utils.extensions.setOnBackPressedDispatcher
 import dagger.hilt.android.AndroidEntryPoint
@@ -88,11 +88,9 @@ class FavoritesFragment
         }
 
         viewModel.setFavoritesEvent.observe(viewLifecycleOwner) { dataState ->
-            if ((dataState is DataState.OnSuccess && dataState.data == null)
-                || (dataState is DataState.OnException)
-            ) Toast.makeText(
-                requireContext(), getString(R.string.generic_error), Toast.LENGTH_LONG
-            ).show()
+            if (dataState is DataState.OnSuccess && dataState.data == null
+                || dataState is DataState.OnException
+            ) requireContext().errorToast()
             else view?.postDelayed({ getFavorites() }, 500)
         }
 
