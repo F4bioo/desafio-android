@@ -58,8 +58,9 @@ class FavoritesFragment
 
     private fun initListeners() {
         adapter.setOnItemClickListener { view, user, _ ->
-            when (view.id) {
-                R.id.check_favorite -> viewModel.setFavorite(user)
+            when {
+                view.id == R.id.check_favorite -> viewModel.setFavorite(user)
+                user.username.isEmpty() || user.name.isEmpty() -> requireContext().errorToast()
                 else -> findNavController().safelyNavigate(
                     FavoritesFragmentDirections.actionFavoritesFragmentToDetailsFragment(user)
                 )

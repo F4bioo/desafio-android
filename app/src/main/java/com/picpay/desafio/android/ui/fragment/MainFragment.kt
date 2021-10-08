@@ -89,8 +89,9 @@ class MainFragment constructor(
         adapter.setOnItemClickListener { view, user, position ->
             pos = position
 
-            when (view.id) {
-                R.id.check_favorite -> viewModel.setFavorite(user)
+            when {
+                view.id == R.id.check_favorite -> viewModel.setFavorite(user)
+                user.username.isEmpty() || user.name.isEmpty() -> requireContext().errorToast()
                 else -> findNavController().safelyNavigate(
                     MainFragmentDirections.actionMainFragmentToDetailsFragment(user)
                 )

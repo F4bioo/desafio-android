@@ -19,10 +19,7 @@ import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.databinding.FragmentDetailsBinding
 import com.picpay.desafio.android.ui.viewmodel.DetailsViewModel
 import com.picpay.desafio.android.utils.Constants
-import com.picpay.desafio.android.utils.extensions.bg
-import com.picpay.desafio.android.utils.extensions.errorToast
-import com.picpay.desafio.android.utils.extensions.set
-import com.picpay.desafio.android.utils.extensions.username
+import com.picpay.desafio.android.utils.extensions.*
 import dagger.hilt.android.AndroidEntryPoint
 
 @AndroidEntryPoint
@@ -56,9 +53,9 @@ class DetailsFragment : BottomSheetDialogFragment() {
     private fun viewBiding() {
         binding.apply {
             textUsername.username(user.username)
-            textName.text = user.name
+            textName.name(user.name)
             imageUser.bg()
-            textFirstChar.text = user.name.first().toString()
+            textFirstChar.charAt(user.name)
             imageUser.set(user.img) { textFirstChar.text = "" }
             if (user.favorite)
                 buttonFavorite.favorite(

@@ -60,7 +60,9 @@ constructor(
                 checkFavorite.isFavorite(user.id)
 
                 checkFavorite.setOnClickListener {
-                    if (user.name.isEmpty()) checkFavorite.isChecked = false
+                    if (user.username.isEmpty() ||
+                        user.name.isEmpty()
+                    ) checkFavorite.isChecked = false
                     biding.clicked(it, user, layoutPosition)
                 }
             }
@@ -86,7 +88,7 @@ constructor(
     }
 
     private fun AdapterItemBinding.clicked(view: View, user: User, position: Int) {
-        if (user.name.isNotEmpty()) {
+        if (user.username.isNotEmpty() || user.name.isNotEmpty()) {
             user.favorite = checkFavorite.isChecked
             onClickListener?.invoke(view, user, position)
         } else view.context.errorToast()

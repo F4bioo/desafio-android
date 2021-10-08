@@ -18,8 +18,7 @@ import com.squareup.picasso.Picasso
 import java.util.*
 
 fun ImageView.set(imageUrl: String, onCallBack: () -> Unit) {
-    val img = if (imageUrl.trim().isEmpty()) "."
-    else imageUrl.trim()
+    val img = if (imageUrl.isEmpty()) "." else imageUrl
     Picasso.get()
         .load(img)
         .into(this, object : Callback {
@@ -66,21 +65,21 @@ fun Context.errorToast() {
 }
 
 fun TextView.charAt(name: String) {
-    text = if (name.trim().isNotEmpty()) {
-        name.trim().first().toString()
-    } else ""
+    text = if (name.isNotEmpty()) {
+        name.first().toString()
+    } else "!"
 }
 
 fun TextView.username(username: String) {
-    text = if (username.trim().isEmpty()) {
+    text = if (username.isEmpty()) {
         context.getString(R.string.error_loading)
-    } else context.getString(R.string.username, username.trim())
+    } else context.getString(R.string.username, username)
 }
 
 fun TextView.name(name: String) {
-    text = if (name.trim().isEmpty()) {
+    text = if (name.isEmpty()) {
         context.getString(R.string.check_connection)
-    } else name.trim()
+    } else name
 }
 
 fun FragmentActivity.setOnBackPressedDispatcher(handleOnBackPressed: () -> Unit) {

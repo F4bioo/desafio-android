@@ -7,10 +7,10 @@ import com.picpay.desafio.android.data.model.UserEntity
 
 fun UserDomain.fromUserDomainToUser(): User {
     return User(
-        id = this.id ?: "",
-        name = this.name ?: "",
-        img = this.img ?: "",
-        username = this.username ?: ""
+        id = this.id?.trim() ?: "",
+        name = this.name?.trim() ?: "",
+        img = this.img?.trim() ?: "",
+        username = this.username?.trim() ?: ""
     )
 }
 

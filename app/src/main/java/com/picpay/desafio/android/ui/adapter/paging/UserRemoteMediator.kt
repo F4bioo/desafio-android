@@ -40,7 +40,7 @@ class UserRemoteMediator(
 
             when (val response = getUsers.invoke()) {
                 is DataState.OnSuccess -> users.addAll(response.data)
-                else -> return MediatorResult.Error(Exception("Error to loading"))
+                else -> return MediatorResult.Error(Exception("Error loading"))
             }
 
             val isEndOfList = users.isEmpty()
