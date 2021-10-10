@@ -1,5 +1,6 @@
 package com.picpay.desafio.android.ui.viewmodel
 
+import androidx.datastore.preferences.core.booleanPreferencesKey
 import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
@@ -13,7 +14,7 @@ import com.picpay.desafio.android.data.model.User
 import com.picpay.desafio.android.data.usecase.GetMediatorData
 import com.picpay.desafio.android.data.usecase.SetFavorite
 import com.picpay.desafio.android.utils.Constants
-import com.picpay.desafio.android.utils.Prefs
+import com.picpay.desafio.android.utils.DataStoreManager
 import com.picpay.desafio.android.utils.extensions.fromUserEntityToUser
 import dagger.hilt.android.lifecycle.HiltViewModel
 import kotlinx.coroutines.flow.collect
@@ -27,7 +28,7 @@ class MainViewModel
 constructor(
     private val setFavorite: SetFavorite,
     private val getMediatorData: GetMediatorData,
-    private val prefs: Prefs
+    private var dataStoreManager: DataStoreManager
 ) : ViewModel() {
 
     private val _pagingEvent = MutableLiveData<PagingData<User>>()
@@ -38,8 +39,13 @@ constructor(
     val setFavoriteEvent: LiveData<DataState<User?>>
         get() = _setFavoriteEvent
 
+    private val _getDayNightEvent = MutableLiveData<Boolean>()
+    val getDayNightEvent: LiveData<Boolean>
+        get() = _getDayNightEvent
+
     init {
         getUsersFromMediator()
+        readDayNightValue()
     }
 
     fun getUsersFromMediator() {
@@ -52,21 +58,29 @@ constructor(
         }
     }
 
-    fun getPrefsDayNightMode(notify: (isDayMode: Boolean) -> Unit) {
-        val isDayMode = prefs.getBoolean(
-            Constants.KEY_DAY_NIGHT_MODE, true
-        )
-        notify.invoke(isDayMode)
-    }
-
-    fun setPrefsDayNightMode(isDayMode: Boolean, notify: () -> Unit) {
-        prefs.setBoolean(Constants.KEY_DAY_NIGHT_MODE, isDayMode)
-        notify.invoke()
-    }
-
     fun setFavorite(user: User) {
         viewModelScope.launch {
             _setFavoriteEvent.value = setFavorite.invoke(SetFavorite.Params(user))
+        }
+    }
+
+    fun storeDayNightValue(isDayMode: Boolean) {
+        viewModelScope.launch {
+            dataStoreManager.storeValue(
+                booleanPreferencesKey(Constants.KEY_DAY_NIGHT_MODE),
+                isDayMode
+            )
+        }
+    }
+
+    private fun readDayNightValue(defValue: Boolean = false) {
+        viewModelScope.launch {
+            dataStoreManager.readValue(
+                booleanPreferencesKey(Constants.KEY_DAY_NIGHT_MODE),
+                defValue
+            ) {
+                _getDayNightEvent.value = this
+            }
         }
     }
 }

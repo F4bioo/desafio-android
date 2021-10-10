@@ -87,6 +87,9 @@ dependencies {
     // Paging 3
     implementation "androidx.paging:paging-runtime-ktx:$paging_version"
 
+    // DataStore preferences
+    implementation "androidx.datastore:datastore-preferences:$datastore_version"
+
     // Navigation
     implementation "androidx.navigation:navigation-fragment-ktx:$nav_version"
     implementation "androidx.navigation:navigation-ui-ktx:$nav_version"

@@ -71,7 +71,7 @@ class DetailsFragment : BottomSheetDialogFragment() {
                 viewModel.shareContact(
                     getString(R.string.share_extra, user.username, user.name),
                     getString(R.string.share_title)
-                ) { startActivity(it) }
+                ) { startActivity(this) }
             }
 
             buttonFavorite.setOnClickListener {

@@ -32,7 +32,7 @@ constructor(
     fun shareContact(
         textExtra: String,
         textTitle: String,
-        startActivity: (intent: Intent) -> Unit
+        startActivity: Intent.() -> Unit
     ) {
         val intent = Intent().apply {
             action = Intent.ACTION_SEND
@@ -44,6 +44,6 @@ constructor(
         }
 
         val shareIntent = Intent.createChooser(intent, textTitle)
-        startActivity(shareIntent)
+        startActivity.invoke(shareIntent)
     }
 }

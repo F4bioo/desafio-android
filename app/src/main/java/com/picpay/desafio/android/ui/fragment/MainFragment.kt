@@ -2,8 +2,12 @@ package com.picpay.desafio.android.ui.fragment
 
 import android.os.Bundle
 import android.view.View
+import androidx.core.view.get
 import androidx.core.view.isVisible
-import androidx.fragment.app.*
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentActivity
+import androidx.fragment.app.setFragmentResultListener
+import androidx.fragment.app.viewModels
 import androidx.navigation.fragment.findNavController
 import androidx.paging.CombinedLoadStates
 import androidx.paging.ExperimentalPagingApi
@@ -16,9 +20,9 @@ import com.picpay.desafio.android.databinding.FragmentMainBinding
 import com.picpay.desafio.android.ui.adapter.RemoteUserAdapter
 import com.picpay.desafio.android.ui.viewmodel.MainViewModel
 import com.picpay.desafio.android.utils.Constants
-import com.picpay.desafio.android.utils.SharedViewModel
 import com.picpay.desafio.android.utils.extensions.errorToast
 import com.picpay.desafio.android.utils.extensions.safelyNavigate
+import com.picpay.desafio.android.utils.extensions.setDayNightMode
 import com.picpay.desafio.android.utils.extensions.setOnBackPressedDispatcher
 import dagger.hilt.android.AndroidEntryPoint
 
@@ -32,7 +36,6 @@ class MainFragment constructor(
     private var _binding: FragmentMainBinding? = null
     private val binding get() = _binding!!
     private val viewModel by viewModels<MainViewModel>()
-    private val sharedViewModel by activityViewModels<SharedViewModel>()
     private var isOnTop = true
     private var pos = -1
 
@@ -41,8 +44,8 @@ class MainFragment constructor(
         _binding = FragmentMainBinding.bind(view)
         viewBiding()
         initObserver()
-        initRecyclerView()
         initListeners()
+        initRecyclerView()
         requireActivity()
             .initOnBackDispatcher()
     }
@@ -69,10 +72,15 @@ class MainFragment constructor(
             ) requireContext().errorToast()
         }
 
-        viewModel.getPrefsDayNightMode { isDayMode ->
-            if (isDayMode) {
-                binding.includeHeader.radioDayMode.isChecked = true
-            } else binding.includeHeader.radioNightMode.isChecked = true
+        viewModel.getDayNightEvent.observe(viewLifecycleOwner) { isDayMode ->
+            isDayMode.setDayNightMode()
+
+            binding.includeHeader.apply {
+                when (isDayMode) {
+                    true -> radioDayMode.isChecked = true
+                    else -> radioNightMode.isChecked = true
+                }
+            }
         }
 
         setFragmentResultListener(Constants.KEY_FAVORITE) { _, _ ->
@@ -98,6 +106,12 @@ class MainFragment constructor(
             }
         }
 
+        binding.includeHeader.radioGroup.setOnCheckedChangeListener { group, checkedId ->
+            if (group[0].isPressed || group[1].isPressed) {
+                viewModel.storeDayNightValue(checkedId == R.id.radio_day_mode)
+            }
+        }
+
         binding.includeList.recycler.addOnScrollListener(object : RecyclerView.OnScrollListener() {
             override fun onScrolled(recyclerView: RecyclerView, dx: Int, dy: Int) {
                 super.onScrolled(recyclerView, dx, dy)
@@ -115,18 +129,6 @@ class MainFragment constructor(
                         && newState == RecyclerView.SCROLL_STATE_IDLE)
             }
         })
-
-        binding.includeHeader.radioGroup.setOnCheckedChangeListener { _, checkedId ->
-            when (checkedId) {
-                R.id.radio_day_mode -> viewModel.setPrefsDayNightMode(true) {
-                    sharedViewModel.setResult(true)
-                }
-
-                else -> viewModel.setPrefsDayNightMode(false) {
-                    sharedViewModel.setResult(false)
-                }
-            }
-        }
 
         adapter.addLoadStateListener { loadStates ->
             loadStates.emptyListRule()

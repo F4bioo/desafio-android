@@ -31,6 +31,9 @@ buildscript {
         // Navigation
         nav_version = '2.3.5'
 
+        // DataStore preferences
+        datastore_version = '1.0.0'
+
         // Test
         junit_version = '4.13.2'
         mockito_version = '3.9.0'
