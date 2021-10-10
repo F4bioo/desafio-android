@@ -22,8 +22,10 @@ Boa sorte! =)
 
 # Challenge result
 ## This is an example project using
+- Jetpack components
 - Retrofit
 - Room Database
+- DataStore
 - Hilt Dependency Injection
 - MVVM Architecture
 - Paging 3, LoadStateAdapter
@@ -31,7 +33,6 @@ Boa sorte! =)
 - Navigation, single Activity architecture
 - SafeArgs
 - Api rest
-- Jetpack components
 
 Response list
 ```sh
