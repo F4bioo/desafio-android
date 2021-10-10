@@ -71,7 +71,9 @@ Response list
 
 * [Room](https://developer.android.com/training/data-storage/room)
 
-* [Shared Preferences](https://developer.android.com/training/data-storage/shared-preferences)
+* <del>[SharedPreferences](https://developer.android.com/training/data-storage/shared-preferences)</del>
+  
+* [DataStore](https://developer.android.com/topic/libraries/architecture/datastore)
 
 * [Retrofit](https://square.github.io/retrofit/)
 
